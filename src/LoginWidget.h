@@ -1,6 +1,8 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
+#include "userinfomanager.h"
+
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -16,6 +18,8 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+    UserInfoManager *userInfoManager;
+    void handleLoginPushButtonClicked();
 
 private:
     Ui::Widget *ui;

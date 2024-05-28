@@ -3,14 +3,23 @@
 
 #include <QObject>
 #include <QString>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QEventLoop>
+#include <QTimer>
 #include "UserInfo.h"
 
-class UserInfoManager
+class UserInfoManager: public QObject
 {
-public:
-    UserInfoManager * userInfoManager = nullptr;
+    Q_OBJECT
 
-    UserInfoManager* getUserInfoManager();
+public:
+    static UserInfoManager* getUserInfoManager();
+
+    // 定义主机名和端口号常量
+    const QString HOST_NAME = "localhost";
+    const int PORT = 8080;
 
     bool login(QString email, QString password);
     bool login(int UID, QString password);
@@ -33,7 +42,9 @@ public:
     UserInfo getUserInfo(int UID);
     UserInfo getUserInfo(QString email);
 private:
-    UserInfoManager();
+    explicit UserInfoManager(QObject *parent = nullptr);
+    static UserInfoManager* userInfoManager;
+    QNetworkAccessManager *networkManager;
 };
 
 #endif // USERINFOMANAGER_H
