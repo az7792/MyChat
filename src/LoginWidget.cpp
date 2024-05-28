@@ -1,5 +1,5 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "LoginWidget.h"
+#include "ui_LoginWidget.h"
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
