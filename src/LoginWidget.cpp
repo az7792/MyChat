@@ -8,6 +8,9 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     userInfoManager = UserInfoManager::getUserInfoManager();
     connect(ui->loginPushButton,&QPushButton::clicked,this,&Widget::handleLoginPushButtonClicked);
+    connect(ui->registerPushButton,&QPushButton::clicked,this,[](){
+        qDebug()<<1;
+    });
 }
 
 Widget::~Widget()
@@ -18,4 +21,5 @@ Widget::~Widget()
 void Widget::handleLoginPushButtonClicked()
 {
     qDebug()<<userInfoManager->isUserExist(1);
+    qDebug()<<userInfoManager->isEmailExist("1460014874@qq.com1");
 }

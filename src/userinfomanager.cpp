@@ -1,30 +1,52 @@
 #include "userinfomanager.h"
-UserInfoManager* UserInfoManager::userInfoManager = nullptr;
+
+
+QScopedPointer<UserInfoManager> UserInfoManager::userInfoManager;
 
 UserInfoManager::UserInfoManager(QObject *parent) : QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
+    qDebug()<<isEmailValid("1460014874@qq.com");
+    qDebug()<<isUsernameValid("一二三四五一二三四五一二三四五一二三四五a");
+    qDebug()<<isPasswordValid("674~ds\[])(_+=");
+}
+
+UserInfoManager::~UserInfoManager()
+{
 }
 
 UserInfoManager* UserInfoManager::getUserInfoManager() {
-    if (userInfoManager == nullptr) {
-        userInfoManager = new UserInfoManager();
+    if (!userInfoManager) {
+        userInfoManager.reset(new UserInfoManager());
     }
-    return userInfoManager;
+    return userInfoManager.data();
 }
 
 //登录请求
 bool UserInfoManager::login(QString email, QString password) {
 
 }
+
 //登录请求
 bool UserInfoManager::login(int UID, QString password) {
 
 }
+
 //注册请求
 bool UserInfoManager::registerUser(QString username, QString email, QString password) {
+    //验证数据格式
+    if(isUsernameValid(username)==false)return false;
+    if(isEmailValid(email)==false)return false;
+    if(isPasswordValid(password)==false)return false;
+
+    //验证用户是否存在
+    if(isEmailExist(email)==true)return false;
+    password = encryptPassword(password);
+
+    //登录请求
 
 }
+
 //注销用户
 bool UserInfoManager::deleteUser(int UID) {
 
@@ -33,69 +55,118 @@ bool UserInfoManager::deleteUser(int UID) {
 bool UserInfoManager::isUserExist(int UID) {
     QNetworkRequest request;
     request.setUrl(QUrl("http://" + HOST_NAME + ":" + QString::number(PORT) + "/exists/uid?uid=" + QString::number(UID)));
-    QNetworkReply * reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
+    QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
     QEventLoop loop;
     // 当请求完成时，中断事件循环
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec(); // 等待请求完成或超时
+    loop.exec(); // 等待请求完成
 
     bool userExists = false; // 默认用户不存在
-    if (reply->isFinished()) {
-        if (reply->error() == QNetworkReply::NoError) { // 无错误发生
-            // 读取响应数据
-            QByteArray responseData = reply->readAll();
-            if(QString::fromUtf8(responseData.constData())=="true")
-                userExists = true;
-        } else {
-            // 发生错误时处理错误信息
-            qDebug() << "Error: " << reply->errorString();
-        }
-    } else {
-        // 超时处理
-        qDebug() << "请求失败";
+    if (reply->isFinished()&&reply->error() == QNetworkReply::NoError) {
+        // 读取响应数据
+        QByteArray responseData = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
+        userExists = jsonDocument.object()["isUserExist"].toBool();
+    }else {
+        qDebug() << "Error: " << reply->errorString();
     }
-
     reply->deleteLater();
     return userExists;
 }
 
 //邮箱是否存在
 bool UserInfoManager::isEmailExist(QString email) {
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://" + HOST_NAME + ":" + QString::number(PORT) + "/exists/email?email=" + email));
+    QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
+    QEventLoop loop;
+    // 当请求完成时，中断事件循环
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec(); // 等待请求完成
+
+    bool emailExists = false; // 默认邮箱不存在
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+        // 读取响应数据
+        QByteArray responseData = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
+        emailExists = jsonDocument.object()["isEmailExist"].toBool();
+    } else {
+        qDebug() << "Error: " << reply->errorString();
+    }
+    reply->deleteLater();
+    return emailExists;
 }
+
 //用户名是否合法
 bool UserInfoManager::isUsernameValid(QString username) {
-
+    // 使用正则表达式匹配用户名格式
+    static const QRegularExpression usernameRegex(R"(^[a-zA-Z0-9一-龥_]{1,20}$)");//由 1 到 20 个汉字、字母、数字或下划线组成
+    QRegularExpressionMatch match = usernameRegex.match(username);
+    return match.hasMatch();
 }
+
 //邮箱是否合法
 bool UserInfoManager::isEmailValid(QString email) {
-
+    // 使用正则表达式匹配邮箱格式
+    static const QRegularExpression emailRegex(R"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
+    QRegularExpressionMatch match = emailRegex.match(email);
+    return (match.hasMatch() && email.size()<=100);
 }
+
 //密码是否合法
 bool UserInfoManager::isPasswordValid(QString password) {
+    if (password.size() < 6 || password.size() > 20)
+        return false;
 
+    int isupper = 0, islower = 0, isdigit = 0, isspecial = 0;
+
+    for (const QChar &ch : password) {
+        if (ch.isUpper())//大写字母
+            isupper = 1;
+        else if (ch.isLower())//小写字母
+            islower = 1;
+        else if (ch.isDigit())//数字
+            isdigit = 1;
+        else if (ch.isPunct() || ch.isSymbol())//标点符号或符号字符
+            isspecial = 1;
+    }
+    // 至少包含两种类型的符号
+    return isupper + islower + isdigit + isspecial >= 2;
 }
+
 //加密密码
 QString UserInfoManager::encryptPassword(QString password) {
-
+    QByteArray byteArray = password.toUtf8();
+    // SHA-256加密
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.addData(byteArray);
+    QByteArray hashedData = hash.result();
+    // 转16进制
+    return hashedData.toHex();
 }
+
 //修改用户名
 bool UserInfoManager::changeUsername(int UID, QString newUsername) {
 
 }
+
 //修改邮箱
 bool UserInfoManager::changeEmail(int UID, QString newEmail) {
 
 }
+
 //修改密码
 bool UserInfoManager::changePassword(int UID, QString newPassword) {
 
 }
+
 //获取用户信息
 UserInfo UserInfoManager::getUserInfo(int UID) {
 
 }
+
 //获取用户信息
 UserInfo UserInfoManager::getUserInfo(QString email) {
 

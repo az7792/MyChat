@@ -8,6 +8,8 @@
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QTimer>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "UserInfo.h"
 
 class UserInfoManager: public QObject
@@ -16,7 +18,7 @@ class UserInfoManager: public QObject
 
 public:
     static UserInfoManager* getUserInfoManager();
-
+    ~UserInfoManager();
     // 定义主机名和端口号常量
     const QString HOST_NAME = "localhost";
     const int PORT = 8080;
@@ -40,10 +42,13 @@ public:
     bool changePassword(int UID, QString newPassword);
 
     UserInfo getUserInfo(int UID);
-    UserInfo getUserInfo(QString email);
+    UserInfo getUserInfo(QString email);    
 private:
     explicit UserInfoManager(QObject *parent = nullptr);
-    static UserInfoManager* userInfoManager;
+
+    UserInfoManager(const UserInfoManager&) = delete; // 禁用拷贝构造函数
+    UserInfoManager& operator=(const UserInfoManager&) = delete; // 禁用拷贝赋值运算符
+    static QScopedPointer<UserInfoManager> userInfoManager;
     QNetworkAccessManager *networkManager;
 };
 
