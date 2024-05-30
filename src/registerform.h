@@ -1,0 +1,44 @@
+#ifndef REGISTERFORM_H
+#define REGISTERFORM_H
+
+#include "userinfomanager.h"
+
+#include <QWidget>
+
+namespace Ui {
+class RegisterForm;
+}
+
+class RegisterForm : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit RegisterForm(QWidget *parent = nullptr);
+    ~RegisterForm();
+    UserInfoManager *userInfoManager;
+
+private slots:
+
+    void on_userNameLineEdit_editingFinished();
+
+    void on_accountLineEdit_editingFinished();
+
+    void on_passwordLineEdit1_editingFinished();
+
+    void on_showPasswordCheckBox_stateChanged(int arg1);
+
+    void on_passwordLineEdit2_editingFinished();
+
+    void on_registerPushButton_clicked();
+
+    void on_getCaptchaPushButton_clicked();
+
+    void on_captchaLineEdit_editingFinished();
+
+private:
+    Ui::RegisterForm *ui;
+    int countdown=0; // 倒计时
+};
+
+#endif // REGISTERFORM_H

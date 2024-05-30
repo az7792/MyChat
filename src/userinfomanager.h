@@ -22,11 +22,14 @@ public:
     // 定义主机名和端口号常量
     const QString HOST_NAME = "localhost";
     const int PORT = 8080;
+    const QString BASE_URL = "http://" + HOST_NAME + ":" + QString::number(PORT) + "/";
 
     bool login(QString email, QString password);
     bool login(int UID, QString password);
 
     bool registerUser(QString username, QString email, QString password);
+    bool matchCaptcha(QString email,QString code);
+    bool getCaptchaByEmail(QString email);
     bool deleteUser(int UID);
 
     bool isUserExist(int UID);
@@ -50,6 +53,7 @@ private:
     UserInfoManager& operator=(const UserInfoManager&) = delete; // 禁用拷贝赋值运算符
     static QScopedPointer<UserInfoManager> userInfoManager;
     QNetworkAccessManager *networkManager;
+    QJsonDocument sendPostRequest(QString endpoint, QUrlQuery postData);
 };
 
 #endif // USERINFOMANAGER_H

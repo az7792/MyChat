@@ -1,16 +1,14 @@
 #include "userinfomanager.h"
 
+#include <QUrlQuery>
+
 
 QScopedPointer<UserInfoManager> UserInfoManager::userInfoManager;
 
 UserInfoManager::UserInfoManager(QObject *parent) : QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
-    qDebug()<<isEmailValid("1460014874@qq.com");
-    qDebug()<<isUsernameValid("一二三四五一二三四五一二三四五一二三四五a");
-    qDebug()<<isPasswordValid("674~ds\[])(_+=");
 }
-
 UserInfoManager::~UserInfoManager()
 {
 }
@@ -21,15 +19,72 @@ UserInfoManager* UserInfoManager::getUserInfoManager() {
     }
     return userInfoManager.data();
 }
+//发POST请求
+QJsonDocument UserInfoManager::sendPostRequest(QString endpoint,QUrlQuery postData)
+{
+    QNetworkRequest request(QUrl(BASE_URL + endpoint));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    // 发送POST请求
+    QNetworkReply *reply = networkManager->post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
+    // 等待请求完成
+    QEventLoop loop;
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
 
-//登录请求
-bool UserInfoManager::login(QString email, QString password) {
-
+    // 解析响应
+    QJsonDocument jsonDocument;
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+        QByteArray responseData = reply->readAll();
+        jsonDocument = QJsonDocument::fromJson(responseData);
+    } else {
+        qDebug() << "Error: " << reply->errorString();
+    }
+    reply->deleteLater();
+    return jsonDocument;
 }
 
-//登录请求
-bool UserInfoManager::login(int UID, QString password) {
+// 登录请求ByEmail
+bool UserInfoManager::login(QString email, QString password) {
+    if(!isEmailValid(email)) return false;
+    if(!isPasswordValid(password)) return false;
+    password = encryptPassword(password);
 
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("email", email);
+    postData.addQueryItem("password", password);
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("login/email",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
+}
+
+// 登录请求ByUID
+bool UserInfoManager::login(int UID, QString password) {
+    if(UID <= 0) return false;
+    if(!isPasswordValid(password)) return false;
+    password = encryptPassword(password);
+
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("uid",  QString::number(UID));
+    postData.addQueryItem("password", password);
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("login/uid",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
 }
 
 //注册请求
@@ -43,8 +98,58 @@ bool UserInfoManager::registerUser(QString username, QString email, QString pass
     if(isEmailExist(email)==true)return false;
     password = encryptPassword(password);
 
-    //登录请求
+    //注册请求
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("username",  username);
+    postData.addQueryItem("email",  email);
+    postData.addQueryItem("password", password);
 
+    QJsonDocument jsonDocument = sendPostRequest("register",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
+}
+
+//匹配验证码
+bool UserInfoManager::matchCaptcha(QString email, QString code)
+{
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("email", email);
+    postData.addQueryItem("code", code);
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("matchCaptcha",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
+}
+
+//通过邮箱获取验证码
+bool UserInfoManager::getCaptchaByEmail(QString email)
+{
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("email", email);
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("sendCaptchaByEmail",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
 }
 
 //注销用户
@@ -54,7 +159,7 @@ bool UserInfoManager::deleteUser(int UID) {
 //用户是否存在
 bool UserInfoManager::isUserExist(int UID) {
     QNetworkRequest request;
-    request.setUrl(QUrl("http://" + HOST_NAME + ":" + QString::number(PORT) + "/exists/uid?uid=" + QString::number(UID)));
+    request.setUrl(QUrl(BASE_URL+"exists/uid?uid=" + QString::number(UID)));
     QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
     QEventLoop loop;
@@ -67,7 +172,7 @@ bool UserInfoManager::isUserExist(int UID) {
         // 读取响应数据
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
-        userExists = jsonDocument.object()["isUserExist"].toBool();
+        userExists = jsonDocument.object()["exist"].toBool();
     }else {
         qDebug() << "Error: " << reply->errorString();
     }
@@ -78,7 +183,7 @@ bool UserInfoManager::isUserExist(int UID) {
 //邮箱是否存在
 bool UserInfoManager::isEmailExist(QString email) {
     QNetworkRequest request;
-    request.setUrl(QUrl("http://" + HOST_NAME + ":" + QString::number(PORT) + "/exists/email?email=" + email));
+    request.setUrl(QUrl(BASE_URL+"exists/email?email=" + email));
     QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
     QEventLoop loop;
@@ -91,7 +196,7 @@ bool UserInfoManager::isEmailExist(QString email) {
         // 读取响应数据
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
-        emailExists = jsonDocument.object()["isEmailExist"].toBool();
+        emailExists = jsonDocument.object()["exist"].toBool();
     } else {
         qDebug() << "Error: " << reply->errorString();
     }
