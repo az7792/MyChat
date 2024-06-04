@@ -5,11 +5,10 @@
 
 #include <QWidget>
 #include <QMessageBox>
-QT_BEGIN_NAMESPACE
+
 namespace Ui {
-class Widget;
+class LoginForm;
 }
-QT_END_NAMESPACE
 
 class LoginForm : public QWidget
 {
@@ -23,6 +22,7 @@ public:
 signals:
     void showRegisterForm(); // 显示注册窗口
     void loggedIn(); // 用户登录成功
+    void showResetPasswordForm();// 显示忘记密码窗口
 
 private slots:
     void on_showPasswordCheckBox_stateChanged(int state);
@@ -33,6 +33,6 @@ private slots:
     void on_retrievePasswordPushButton_clicked();
 
 private:
-    Ui::Widget *ui;
+    Ui::LoginForm *ui;
 };
 #endif // LOGINFORM_H

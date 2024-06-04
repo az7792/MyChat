@@ -29,7 +29,7 @@ private slots:
 
     void on_passwordLineEdit1_editingFinished();
 
-    void on_showPasswordCheckBox_stateChanged(int arg1);
+    void on_showPasswordCheckBox_stateChanged(int state);
 
     void on_passwordLineEdit2_editingFinished();
 
@@ -44,6 +44,7 @@ private slots:
 private:
     Ui::RegisterForm *ui;
     int countdown=0; // 倒计时
+    bool passwordOk1=false,passwordOk2=false,userNameOk=false,accounOk=false;
 };
 
 #endif // REGISTERFORM_H

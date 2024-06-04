@@ -3,7 +3,7 @@
 
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
+    , ui(new Ui::LoginForm)
 {
     ui->setupUi(this);
     userInfoManager = UserInfoManager::getUserInfoManager();
@@ -73,6 +73,6 @@ void LoginForm::on_registerPushButton_clicked()
 // 忘记密码按钮被按下
 void LoginForm::on_retrievePasswordPushButton_clicked()
 {
-
+    emit showResetPasswordForm();//发射显示忘记密码界面的信号
 }
 

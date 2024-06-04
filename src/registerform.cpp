@@ -22,7 +22,13 @@ RegisterForm::~RegisterForm()
 void RegisterForm::on_userNameLineEdit_editingFinished()
 {
     QString text = ui->userNameLineEdit->text();
-    ui->userNameTipLabel->setText(userInfoManager->isUsernameValid(text) ? "" : "用户名由1到20个汉字、字母、数字或下划线组成");
+    if(userInfoManager->isUsernameValid(text)){
+        ui->userNameTipLabel->setText("");
+        userNameOk = true;
+    }else{
+        ui->userNameTipLabel->setText("用户名由1到20个汉字、字母、数字或下划线组成");
+        userNameOk = false;
+    }
 }
 
 // 账号(email)编辑框输入完毕后判断格式
@@ -31,13 +37,16 @@ void RegisterForm::on_accountLineEdit_editingFinished()
     QString text = ui->accountLineEdit->text();
     if(!userInfoManager->isEmailValid(text)){
         ui->accountdTipLabel->setText("邮箱格式错误");
+        accounOk = false;
         return;
     }
     if(userInfoManager->isEmailExist(text)){
         ui->accountdTipLabel->setText("此邮箱已注册过");
+        accounOk = false;
         return;
     }
     ui->accountdTipLabel->setText("");
+    accounOk = true;
 }
 
 // 密码1编辑框输入完毕后判断格式
@@ -46,11 +55,20 @@ void RegisterForm::on_passwordLineEdit1_editingFinished()
     QString text1 = ui->passwordLineEdit1->text();
     if(!userInfoManager->isPasswordValid(text1)){
         ui->passwordTipLabel1->setText("密码长度应为6-20个字符，并且必须包含以下四种类型中的至少两种：大写字母、小写字母、数字、特殊符号");
+        passwordOk1 = false;
         return;
     }
     ui->passwordTipLabel1->setText("");
+    passwordOk1 = true;
     QString text2 = ui->passwordLineEdit2->text();
-    ui->passwordTipLabel2->setText(text1==text2?"":"两次密码不一致");
+    if(text1==text2){
+        ui->passwordTipLabel2->setText("");
+        passwordOk2 = true;
+    }else{
+        ui->passwordTipLabel2->setText("两次密码不一致");
+        passwordOk2 = false;
+    }
+
 }
 
 // 切换是否显示密码
@@ -70,12 +88,23 @@ void RegisterForm::on_passwordLineEdit2_editingFinished()
 {
     QString text1 = ui->passwordLineEdit1->text();
     QString text2 = ui->passwordLineEdit2->text();
-    ui->passwordTipLabel2->setText(text1==text2?"":"两次密码不一致");
+    if(text1==text2){
+        ui->passwordTipLabel2->setText("");
+        passwordOk2 = true;
+    }else{
+        ui->passwordTipLabel2->setText("两次密码不一致");
+        passwordOk2 = false;
+    }
+
 }
 
 // 用户注册请求
 void RegisterForm::on_registerPushButton_clicked()
 {
+    if(!(passwordOk1&&passwordOk2&&userNameOk&&accounOk)){
+        QMessageBox::warning(this,"","注册失败,请检查信息是否填写错误");
+        return;
+    }
     bool success = false;
     QString username = ui->userNameLineEdit->text();
     QString email = ui->accountLineEdit->text();
@@ -96,12 +125,8 @@ void RegisterForm::on_registerPushButton_clicked()
 //获取验证码
 void RegisterForm::on_getCaptchaPushButton_clicked()
 {
-    if(!userInfoManager->isEmailValid(ui->accountLineEdit->text())){
-        QMessageBox::warning(this,"","邮箱格式错误");
-        return;
-    }
-    if(userInfoManager->isEmailExist(ui->accountLineEdit->text())){
-        QMessageBox::warning(this,"","邮箱已注册过");
+    if(!accounOk){
+        QMessageBox::warning(this,"","邮箱错误");
         return;
     }
     // 禁用按钮并开始60秒倒计时

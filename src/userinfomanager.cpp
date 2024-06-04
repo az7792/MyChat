@@ -8,6 +8,11 @@ QScopedPointer<UserInfoManager> UserInfoManager::userInfoManager;
 UserInfoManager::UserInfoManager(QObject *parent) : QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
+    //test------------
+    //qDebug()<<changePassword(2,"1234");
+
+
+    //test-------------
 }
 UserInfoManager::~UserInfoManager()
 {
@@ -263,8 +268,21 @@ bool UserInfoManager::changeEmail(int UID, QString newEmail) {
 }
 
 //修改密码
-bool UserInfoManager::changePassword(int UID, QString newPassword) {
+bool UserInfoManager::changePassword(QString email, QString newPassword) {
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("email", email);
+    postData.addQueryItem("password", encryptPassword(newPassword));
 
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("updatePassword",postData);
+
+    // 解析响应
+    bool success = false;
+    if (!jsonDocument.isEmpty()) {
+        success = jsonDocument.object()["success"].toBool();
+    }
+    return success;
 }
 
 //获取用户信息

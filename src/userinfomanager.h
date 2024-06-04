@@ -34,6 +34,7 @@ public:
 
     bool isUserExist(int UID);
     bool isEmailExist(QString email);
+
     bool isUsernameValid(QString username);
     bool isEmailValid(QString email);
     bool isPasswordValid(QString password);
@@ -42,7 +43,7 @@ public:
 
     bool changeUsername(int UID, QString newUsername);
     bool changeEmail(int UID, QString newEmail);
-    bool changePassword(int UID, QString newPassword);
+    bool changePassword(QString email, QString newPassword);
 
     UserInfo getUserInfo(int UID);
     UserInfo getUserInfo(QString email);    

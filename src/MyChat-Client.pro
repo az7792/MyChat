@@ -13,6 +13,7 @@ SOURCES += \
     loginform.cpp \
     main.cpp \
     registerform.cpp \
+    resetpasswordform.cpp \
     userinfo.cpp \
     userinfomanager.cpp
 
@@ -20,12 +21,14 @@ HEADERS += \
     formmanager.h \
     loginform.h \
     registerform.h \
+    resetpasswordform.h \
     userinfo.h \
     userinfomanager.h
 
 FORMS += \
     loginform.ui \
-    registerform.ui
+    registerform.ui \
+    resetpasswordform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
