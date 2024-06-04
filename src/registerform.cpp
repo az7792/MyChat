@@ -13,6 +13,7 @@ RegisterForm::RegisterForm(QWidget *parent)
 
 RegisterForm::~RegisterForm()
 {
+    qDebug()<<1;
     delete ui;
 }
 
@@ -86,8 +87,7 @@ void RegisterForm::on_registerPushButton_clicked()
     }
     success = userInfoManager->registerUser(username,email,password);
     if(success){
-        //打开登录页面
-        qDebug()<<"注册成功";
+        emit registered();
     }else{
         QMessageBox::warning(this, "注册失败", "注册失败，请重试");
     }
@@ -149,5 +149,11 @@ void RegisterForm::on_captchaLineEdit_editingFinished()
         ui->captchaTipLabel->setText("验证码长度应为6");
     else
         ui->captchaTipLabel->setText("");
+}
+
+
+void RegisterForm::on_returnPushButton_clicked()
+{
+    emit showLoginForm();
 }
 

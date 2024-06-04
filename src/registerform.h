@@ -17,6 +17,9 @@ public:
     explicit RegisterForm(QWidget *parent = nullptr);
     ~RegisterForm();
     UserInfoManager *userInfoManager;
+signals:
+    void showLoginForm(); // 显示登录窗口
+    void registered(); // 用户注册成功
 
 private slots:
 
@@ -35,6 +38,8 @@ private slots:
     void on_getCaptchaPushButton_clicked();
 
     void on_captchaLineEdit_editingFinished();
+
+    void on_returnPushButton_clicked();
 
 private:
     Ui::RegisterForm *ui;

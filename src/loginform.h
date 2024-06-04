@@ -20,6 +20,10 @@ public:
     ~LoginForm();
     UserInfoManager *userInfoManager;
 
+signals:
+    void showRegisterForm(); // 显示注册窗口
+    void loggedIn(); // 用户登录成功
+
 private slots:
     void on_showPasswordCheckBox_stateChanged(int state);
     void on_loginPushButton_clicked();

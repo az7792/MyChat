@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    formmanager.cpp \
     loginform.cpp \
     main.cpp \
     registerform.cpp \
@@ -16,6 +17,7 @@ SOURCES += \
     userinfomanager.cpp
 
 HEADERS += \
+    formmanager.h \
     loginform.h \
     registerform.h \
     userinfo.h \

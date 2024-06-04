@@ -1,8 +1,6 @@
 #include "loginform.h"
 #include "ui_loginform.h"
 
-#include <registerform.h>
-
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -13,6 +11,7 @@ LoginForm::LoginForm(QWidget *parent)
 
 LoginForm::~LoginForm()
 {
+    qDebug()<<2;
     delete ui;
 }
 
@@ -59,8 +58,7 @@ void LoginForm::on_loginPushButton_clicked()
         success = userInfoManager->login(UID,password);
     }
     if(success){
-        //打开主页面
-        qDebug()<<"登录成功";
+        emit loggedIn();//发射登录成功的信号
     }else{
         QMessageBox::warning(this, "登录失败", "账号或密码错误，请重新输入。");
     }
@@ -69,7 +67,7 @@ void LoginForm::on_loginPushButton_clicked()
 // 注册按钮被按下
 void LoginForm::on_registerPushButton_clicked()
 {
-
+    emit showRegisterForm();//发射显示注册界面的信号
 }
 
 // 忘记密码按钮被按下
