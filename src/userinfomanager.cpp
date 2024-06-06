@@ -2,28 +2,6 @@
 
 #include <QUrlQuery>
 
-
-QScopedPointer<UserInfoManager> UserInfoManager::userInfoManager;
-
-UserInfoManager::UserInfoManager(QObject *parent) : QObject(parent)
-{
-    networkManager = new QNetworkAccessManager(this);
-    //test------------
-    //qDebug()<<changePassword(2,"1234");
-
-
-    //test-------------
-}
-UserInfoManager::~UserInfoManager()
-{
-}
-
-UserInfoManager* UserInfoManager::getUserInfoManager() {
-    if (!userInfoManager) {
-        userInfoManager.reset(new UserInfoManager());
-    }
-    return userInfoManager.data();
-}
 //发POST请求
 QJsonDocument UserInfoManager::sendPostRequest(QString endpoint,QUrlQuery postData)
 {
@@ -286,11 +264,13 @@ bool UserInfoManager::changePassword(QString email, QString newPassword) {
 }
 
 //获取用户信息
-UserInfo UserInfoManager::getUserInfo(int UID) {
+User UserInfoManager::getUser(int UID)
+{
 
 }
 
+
 //获取用户信息
-UserInfo UserInfoManager::getUserInfo(QString email) {
+User UserInfoManager::getUser(QString email) {
 
 }

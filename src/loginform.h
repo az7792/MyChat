@@ -17,7 +17,7 @@ class LoginForm : public QWidget
 public:
     LoginForm(QWidget *parent = nullptr);
     ~LoginForm();
-    UserInfoManager *userInfoManager;
+    UserInfoManager &userInfoManager = UserInfoManager::getInstance();
 
 signals:
     void showRegisterForm(); // 显示注册窗口

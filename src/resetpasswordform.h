@@ -14,7 +14,7 @@ class ResetPasswordForm : public QWidget
 public:
     explicit ResetPasswordForm(QWidget *parent = nullptr);
     ~ResetPasswordForm();
-    UserInfoManager *userInfoManager;
+    UserInfoManager &userInfoManager = UserInfoManager::getInstance();
 signals:
     void showLoginForm(); // 显示登录窗口
 private slots:

@@ -9,7 +9,6 @@ ResetPasswordForm::ResetPasswordForm(QWidget *parent)
     , ui(new Ui::ResetPasswordForm)
 {
     ui->setupUi(this);
-    userInfoManager = UserInfoManager::getUserInfoManager();
 }
 ResetPasswordForm::~ResetPasswordForm()
 {
@@ -19,12 +18,12 @@ ResetPasswordForm::~ResetPasswordForm()
 void ResetPasswordForm::on_accountLineEdit_editingFinished()
 {
     QString text = ui->accountLineEdit->text();
-    if(!userInfoManager->isEmailValid(text)){
+    if(!userInfoManager.isEmailValid(text)){
         ui->accountdTipLabel->setText("邮箱格式错误");
         accounOk = false;
         return;
     }
-    if(!userInfoManager->isEmailExist(text)){
+    if(!userInfoManager.isEmailExist(text)){
         ui->accountdTipLabel->setText("此邮箱未注册,请先注册");
         accounOk = false;
         return;
@@ -82,7 +81,7 @@ void ResetPasswordForm::on_getCaptchaPushButton_clicked()
     // 启动定时器，每秒触发一次timeout信号
     timer->start(1000);
 
-    bool getCaptcha = userInfoManager->getCaptchaByEmail(ui->accountLineEdit->text());
+    bool getCaptcha = userInfoManager.getCaptchaByEmail(ui->accountLineEdit->text());
     if(!getCaptcha){
         qDebug()<<"获取验证失败";
         timer->stop();
@@ -104,11 +103,11 @@ void ResetPasswordForm::on_resetPasswordPushButton_clicked()
     QString email = ui->accountLineEdit->text();
     QString password = ui->passwordLineEdit1->text();
     QString captcha = ui->captchaLineEdit->text();
-    if(captcha.size()!=6||!userInfoManager->matchCaptcha(email,captcha)){
+    if(captcha.size()!=6||!userInfoManager.matchCaptcha(email,captcha)){
         QMessageBox::warning(this,"","注册失败,验证码错误");
         return;
     }
-    success = userInfoManager->changePassword(email,password);
+    success = userInfoManager.changePassword(email,password);
     if(success){
         QMessageBox::information(this, "", "修改成功");
     }else{
@@ -121,7 +120,7 @@ void ResetPasswordForm::on_resetPasswordPushButton_clicked()
 void ResetPasswordForm::on_passwordLineEdit1_editingFinished()
 {
     QString text1 = ui->passwordLineEdit1->text();
-    if(!userInfoManager->isPasswordValid(text1)){
+    if(!userInfoManager.isPasswordValid(text1)){
         ui->passwordTipLabel1->setText("密码长度应为6-20个字符，并且必须包含以下四种类型中的至少两种：大写字母、小写字母、数字、特殊符号");
         passwordOk1 = false;
         return;

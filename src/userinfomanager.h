@@ -10,15 +10,20 @@
 #include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "UserInfo.h"
+#include "User.h"
 
-class UserInfoManager: public QObject
+class UserInfoManager : public QObject
 {
     Q_OBJECT
 
 public:
-    static UserInfoManager* getUserInfoManager();
-    ~UserInfoManager();
+    static UserInfoManager& getInstance() {
+        static UserInfoManager instance;
+        return instance;
+    }
+
+    ~UserInfoManager() = default;
+
     // 定义主机名和端口号常量
     const QString HOST_NAME = "localhost";
     const int PORT = 8080;
@@ -28,7 +33,7 @@ public:
     bool login(int UID, QString password);
 
     bool registerUser(QString username, QString email, QString password);
-    bool matchCaptcha(QString email,QString code);
+    bool matchCaptcha(QString email, QString code);
     bool getCaptchaByEmail(QString email);
     bool deleteUser(int UID);
 
@@ -45,15 +50,19 @@ public:
     bool changeEmail(int UID, QString newEmail);
     bool changePassword(QString email, QString newPassword);
 
-    UserInfo getUserInfo(int UID);
-    UserInfo getUserInfo(QString email);    
-private:
-    explicit UserInfoManager(QObject *parent = nullptr);
+    User getUser(int UID);
+    User getUser(QString email);
 
-    UserInfoManager(const UserInfoManager&) = delete; // 禁用拷贝构造函数
+private:
+    explicit UserInfoManager(QObject *parent = nullptr) : QObject(parent) {
+        networkManager = new QNetworkAccessManager(this);
+    }
+
+    UserInfoManager(const UserInfoManager&) = delete;            // 禁用拷贝构造函数
     UserInfoManager& operator=(const UserInfoManager&) = delete; // 禁用拷贝赋值运算符
-    static QScopedPointer<UserInfoManager> userInfoManager;
+
     QNetworkAccessManager *networkManager;
+
     QJsonDocument sendPostRequest(QString endpoint, QUrlQuery postData);
 };
 

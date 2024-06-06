@@ -1,13 +1,13 @@
-#ifndef USERINFO_H
-#define USERINFO_H
+#ifndef USER_H
+#define USER_H
 
 #include <QObject>
 #include <QString>
 
-class UserInfo
+class User
 {
 public:
-    UserInfo(int UID,QString username,QString email);
+    User(int UID,QString username,QString email);
     int getUID();
     QString getUsername();
     QString getEmail();
@@ -17,4 +17,4 @@ private:
     QString email;
 };
 
-#endif // USERINFO_H
+#endif // USER_H

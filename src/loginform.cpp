@@ -6,12 +6,10 @@ LoginForm::LoginForm(QWidget *parent)
     , ui(new Ui::LoginForm)
 {
     ui->setupUi(this);
-    userInfoManager = UserInfoManager::getUserInfoManager();
 }
 
 LoginForm::~LoginForm()
 {
-    qDebug()<<2;
     delete ui;
 }
 
@@ -30,7 +28,7 @@ void LoginForm::on_accountLineEdit_editingFinished()
 {
     QString text = ui->accountLineEdit->text();
     if (text.contains('@')) { // 输入的为邮箱
-        ui->accountdTipLabel->setText(userInfoManager->isEmailValid(text) ? "" : "邮箱格式错误");
+        ui->accountdTipLabel->setText(userInfoManager.isEmailValid(text) ? "" : "邮箱格式错误");
     } else { // 输入的为UID
         bool ok;
         int value = text.toInt(&ok); // 尝试将文本转换为整数
@@ -42,7 +40,7 @@ void LoginForm::on_accountLineEdit_editingFinished()
 void LoginForm::on_passwordLineEdit_editingFinished()
 {
     QString text = ui->passwordLineEdit->text();
-    ui->passwordTipLabel->setText(userInfoManager->isPasswordValid(text) ? "" : "密码长度应为6-20个字符，并且必须包含以下四种类型中的至少两种：大写字母、小写字母、数字、特殊符号");
+    ui->passwordTipLabel->setText(userInfoManager.isPasswordValid(text) ? "" : "密码长度应为6-20个字符，并且必须包含以下四种类型中的至少两种：大写字母、小写字母、数字、特殊符号");
 }
 
 // 登录按钮被按下
@@ -52,10 +50,10 @@ void LoginForm::on_loginPushButton_clicked()
     QString text = ui->accountLineEdit->text();
     QString password = ui->passwordLineEdit->text();
     if (text.contains('@')) { // 使用邮箱登录
-        success = userInfoManager->login(text,password);
+        success = userInfoManager.login(text,password);
     } else { // 使用UID登录
         int UID = text.toInt();
-        success = userInfoManager->login(UID,password);
+        success = userInfoManager.login(UID,password);
     }
     if(success){
         emit loggedIn();//发射登录成功的信号
