@@ -2,7 +2,7 @@
 #define CHATFORM_H
 
 #include <QWidget>
-
+#include "user.h"
 namespace Ui {
 class ChatForm;
 }

@@ -266,11 +266,35 @@ bool UserInfoManager::changePassword(QString email, QString newPassword) {
 //获取用户信息
 User UserInfoManager::getUser(int UID)
 {
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("uid", QString::number(UID));
 
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("getUser/uid",postData);
+
+    // 解析响应
+    if(jsonDocument.isEmpty())
+        return User();
+    QJsonObject jsonObject = jsonDocument.object();
+    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString());
+    return user;
 }
 
 
 //获取用户信息
 User UserInfoManager::getUser(QString email) {
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("email", email);
 
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("getUser/email",postData);
+
+    // 解析响应
+    if(jsonDocument.isEmpty())
+        return User();
+    QJsonObject jsonObject = jsonDocument.object();
+    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString());
+    return user;
 }

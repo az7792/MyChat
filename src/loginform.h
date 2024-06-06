@@ -5,7 +5,7 @@
 
 #include <QWidget>
 #include <QMessageBox>
-
+#include "user.h"
 namespace Ui {
 class LoginForm;
 }
@@ -21,7 +21,7 @@ public:
 
 signals:
     void showRegisterForm(); // 显示注册窗口
-    void loggedIn(); // 用户登录成功
+    void loggedIn(User user); // 用户登录成功
     void showResetPasswordForm();// 显示忘记密码窗口
 
 private slots:

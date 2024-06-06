@@ -6,6 +6,7 @@
 #include "loginform.h"
 #include "registerform.h"
 #include "resetpasswordform.h"
+#include "user.h"
 class FormManager : public QWidget
 {
     Q_OBJECT
@@ -16,7 +17,7 @@ signals:
 
 private slots:
     void showRegisterForm();
-    void showMainForm();
+    void showMainForm(User user);
     void showLoginForm();
     void showResetPasswordForm();
 private :

@@ -49,8 +49,9 @@ void FormManager::showResetPasswordForm()
     stackedLayout->setCurrentWidget(resetPasswordForm);
 }
 
-void FormManager::showMainForm()
+void FormManager::showMainForm(User user)
 {
+    qDebug()<<user.getUsername()<<" "<<user.getEmail()<<" "<<user.getUID();
     qDebug() << "切换主页面";
 }
 

@@ -49,14 +49,17 @@ void LoginForm::on_loginPushButton_clicked()
     bool success = false;
     QString text = ui->accountLineEdit->text();
     QString password = ui->passwordLineEdit->text();
+    User user;
     if (text.contains('@')) { // 使用邮箱登录
+        user = userInfoManager.getUser(text);
         success = userInfoManager.login(text,password);
     } else { // 使用UID登录
         int UID = text.toInt();
+        user = userInfoManager.getUser(UID);
         success = userInfoManager.login(UID,password);
     }
     if(success){
-        emit loggedIn();//发射登录成功的信号
+        emit loggedIn(user);//发射登录成功的信号
     }else{
         QMessageBox::warning(this, "登录失败", "账号或密码错误，请重新输入。");
     }
@@ -73,4 +76,3 @@ void LoginForm::on_retrievePasswordPushButton_clicked()
 {
     emit showResetPasswordForm();//发射显示忘记密码界面的信号
 }
-

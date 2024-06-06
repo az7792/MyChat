@@ -13,7 +13,7 @@ public:
     }
     void connectToServer(const QUrl &url);
     void disconnectFromServer();
-    void sendMessage(int from,int to,const QString &message);
+    void sendMessage(int from,int to,const QString &message,QString receiverType);
 signals:
 
 public slots:

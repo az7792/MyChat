@@ -8,11 +8,15 @@ class User
 {
 public:
     User(int UID,QString username,QString email);
+    User();
     int getUID();
     QString getUsername();
     QString getEmail();
+    void setUID(int UID);
+    void setUsername(QString username);
+    void setEmail(QString email);
 private:
-    int UID;
+    int UID=-1;
     QString username;
     QString email;
 };
