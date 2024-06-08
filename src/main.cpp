@@ -1,5 +1,6 @@
 #include "formmanager.h"
-
+#include "addform.h"
+#include "FriendNotificationWindow.h""
 #include <QApplication>
 #include <QPushButton>
 #include "chatwebsocket.h"

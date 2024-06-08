@@ -11,6 +11,8 @@ CONFIG += c++17
 SOURCES += \
     chatform.cpp \
     chatwebsocket.cpp \
+    FriendNotificationWindow.cpp \
+    addform.cpp \
     formmanager.cpp \
     loginform.cpp \
     main.cpp \
@@ -26,6 +28,8 @@ SOURCES += \
 HEADERS += \
     chatform.h \
     chatwebsocket.h \
+    FriendNotificationWindow.h \
+    addform.h \
     formmanager.h \
     logger.h \
     loginform.h \
@@ -51,3 +55,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    ../../../壁纸/原神壁纸/resources.qrc \
+    resources.qrc
+
+DISTFILES += \
+    ../../../壁纸/原神壁纸/914037300.jpg
