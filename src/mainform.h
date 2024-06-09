@@ -7,8 +7,10 @@
 #include"groupmassage.h"
 #include"contactform.h"
 #include"groupform.h"
-#include "ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 #include"user.h"
+#include "addform.h""
+#include "FriendNotificationWindow.h""
 
 namespace Ui {
 class MainForm;
@@ -32,11 +34,18 @@ private slots:
 
     void open_the_groupWindow(int Uid);
 
+    void on_applyButton_clicked();
+
+    void on_addButton_clicked();
+
 private:
      Ui::MainForm *ui;
 
     contactMassage *current_c;
     groupMassage *current_g;
+
+    AddForm *addForm; // 保存 AddForm 的指针
+    FriendNotificationWindow *notificationWindow; // 保存 FriendNotificationWindow 的指针
 
 
 };

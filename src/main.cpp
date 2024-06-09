@@ -5,15 +5,23 @@
 #include <QBuffer>
 #include <QPushButton>
 #include "chatwebsocket.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include "chatform.h"
 #include "mainform.h"
 #include "userinfomanager.h"
+#include "addform.h"
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FormManager widgetManager;
-    widgetManager.show();
+    AddForm addform;
+    addform.show();
+
+    // FormManager widgetManager;
+    // widgetManager.show();
+
+
     // MainForm ttt;
     // ttt.show();
 

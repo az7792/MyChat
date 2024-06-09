@@ -1,15 +1,14 @@
 #include "addform.h"
-#include <QIcon>
 #include <QPixmap>
 #include <QDebug>
+#include "user.h"
+#include "contactmassage.h""
 
-AddForm::AddForm(QWidget *parent) : QWidget(parent) {
-
-    // 窗口的简单设置
+AddForm::AddForm(QWidget *parent) : QWidget(parent)
+{
+    // 基本设置
     setWindowTitle("添加联系人");
     this->setStyleSheet("QWidget { background-color: white; }");
-
-    // 设置窗口大小
     resize(550, 700);
 
     // 创建按钮
@@ -17,17 +16,15 @@ AddForm::AddForm(QWidget *parent) : QWidget(parent) {
     findUserButton = new QPushButton("用户", this);
     findGroupButton = new QPushButton("群聊", this);
 
-    // 设置按钮的初始样式
+    // 设置按钮样式
     findAllButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
     findGroupButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
 
     // 创建搜索框
     searchLineEdit = new QLineEdit(this);
-    searchLineEdit->setPlaceholderText("输入搜索关键词"); // 默认占位符
+    searchLineEdit->setPlaceholderText("输入搜索关键词");
     searchLineEdit->setClearButtonEnabled(true);
-
-    // 设置搜索框的固定大小（宽度400，高度25）
     searchLineEdit->setFixedSize(400, 25);
 
     // 创建搜索按钮
@@ -36,13 +33,8 @@ AddForm::AddForm(QWidget *parent) : QWidget(parent) {
 
     // 创建搜索提示图片和文字
     searchIconLabel = new QLabel(this);
-    QPixmap pixmap(":/img/resources/1.png"); // 替换为你的搜索图标路径
-    if (pixmap.isNull()) {
-        qDebug() << "Failed to load image: :/img/resources/1.png";
-    } else {
-        searchIconLabel->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio));
-    }
-
+    QPixmap pixmap(":/img/resources/1.png"); // 确保图像路径正确
+    searchIconLabel->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio));
     searchHintLabel = new QLabel("输入关键词搜索", this);
     searchHintLabel->setAlignment(Qt::AlignCenter);
 
@@ -85,45 +77,72 @@ AddForm::AddForm(QWidget *parent) : QWidget(parent) {
 }
 
 void AddForm::onFindAllButtonClicked() {
+    updatePlaceholderText();
     findAllButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
     findGroupButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
-    searchLineEdit->setPlaceholderText("输入搜索关键词"); // 设置为 "输入搜索关键词"
 
-    // 显示搜索提示图标和文字
-    searchIconLabel->setVisible(true);
-    searchHintLabel->setVisible(true);
+    // 重新显示搜索提示图标和文字
+    searchIconLabel->show();
+    searchHintLabel->show();
 }
 
 void AddForm::onFindUserButtonClicked() {
+    updatePlaceholderText();
     findUserButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findAllButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
     findGroupButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
-    searchLineEdit->setPlaceholderText("UserId/Username"); // 设置为 "UserId/Username"
 
-    // 显示搜索提示图标和文字
-    searchIconLabel->setVisible(true);
-    searchHintLabel->setVisible(true);
+    // 重新显示搜索提示图标和文字
+    searchIconLabel->show();
+    searchHintLabel->show();
 }
 
 void AddForm::onFindGroupButtonClicked() {
+    updatePlaceholderText();
     findGroupButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
     findAllButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
-    searchLineEdit->setPlaceholderText("GroupId/Groupname"); // 设置为 "GroupId/Groupname"
 
-    // 显示搜索提示图标和文字
-    searchIconLabel->setVisible(true);
-    searchHintLabel->setVisible(true);
+    // 重新显示搜索提示图标和文字
+    searchIconLabel->show();
+    searchHintLabel->show();
 }
 
 void AddForm::onSearchButtonClicked() {
     QString searchText = searchLineEdit->text();
     qDebug() << "搜索: " << searchText;
 
-    // 隐藏搜索提示图标和文字
-    searchIconLabel->setVisible(false);
-    searchHintLabel->setVisible(false);
+    // 假设 userinfomanage 是一个已定义的用户管理类实例，用于从后端获取用户信息
+    User user = userinfomanage.getUser(searchText.toInt());
 
-    // 这里可以添加你实际的搜索逻辑
+    // 创建一个 contactMassage 对象
+    contactMassage *contactMassageWidget = new contactMassage(this);
+
+    // 设置 contactMassageWidget 的信息
+    contactMassageWidget->setName(user.getUsername());
+    contactMassageWidget->setUid(user.getUID());
+
+
+    // 将 contactMassageWidget 添加到 contentStack 中
+    contentStack->addWidget(contactMassageWidget);
+
+    // 切换到显示 contactMassageWidget
+    contentStack->setCurrentWidget(contactMassageWidget);
+
+    // 隐藏搜索提示图标和文字
+    searchIconLabel->hide();
+    searchHintLabel->hide();
 }
+
+void AddForm::updatePlaceholderText() {
+    if (findAllButton->styleSheet().contains("background-color: black")) {
+        searchLineEdit->setPlaceholderText("输入搜索关键词");
+    } else if (findUserButton->styleSheet().contains("background-color: black")) {
+        searchLineEdit->setPlaceholderText("UserId/Username");
+    } else if (findGroupButton->styleSheet().contains("background-color: black")) {
+        searchLineEdit->setPlaceholderText("GroupId/Groupname");
+    }
+}
+
+
