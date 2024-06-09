@@ -35,7 +35,7 @@ void ChatForm::on_SendPushButton_clicked()//发送
     if(ui->plainTextEdit->toPlainText()=="")
         return;
     QString text = ui->plainTextEdit->toPlainText();
-    Message message(fromId,toId,chatType,text,"text");
+    Message message(sendUser.getUID(),toId,chatType,text,"text");
     chatWebsocket.sendMessage(message);
     ui->plainTextEdit->setPlainText("");
     //显示聊天
