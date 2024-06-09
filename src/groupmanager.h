@@ -9,7 +9,7 @@ class groupmanager
 public:
     groupmanager();
 
-    QVector<int> contactList;
+    QVector<int> groupList;
 
 private:
 

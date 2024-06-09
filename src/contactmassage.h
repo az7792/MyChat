@@ -27,6 +27,7 @@ public:
     QString getName();
     void setUid(int newUid);
     int getUid();
+    void setImg(QPixmap img);
 
 private:
     Ui::contactMassage *ui;

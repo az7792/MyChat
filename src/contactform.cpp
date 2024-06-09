@@ -8,21 +8,28 @@ contactForm::contactForm(QWidget *parent)
     ui->setupUi(this);
 
 
-    for(int i=1;i<=20;i++){
-        contactMassage *tempcon=new contactMassage(ui->contactScrollArea);
-        tempcon->setName(QString::number(i));
-        tempcon->setUid(i);
-        connect(tempcon,&contactMassage::doubleClicked,this,&contactForm::passContactUid);
-        ui->conatctScrollAreaWidgetContents->layout()->addWidget(tempcon);
-    }
-
-
-
 
 }
 
 contactForm::~contactForm()
 {
     delete ui;
+}
+
+void contactForm::formInit(User user)
+{
+
+    QVector<User> cList=useIfo.getContactList(user.getUID());
+
+    for(User it:cList)
+    {
+        contactMassage *tempcon=new contactMassage(ui->contactScrollArea);
+        tempcon->setUid(it.getUID());
+        tempcon->setName(it.getUsername());
+        tempcon->setImg(it.getAvatar());
+        qDebug()<<it.getUID();
+        connect(tempcon,&contactMassage::doubleClicked,this,&contactForm::passContactUid);
+        ui->conatctScrollAreaWidgetContents->layout()->addWidget(tempcon);
+    }
 }
 

@@ -288,15 +288,7 @@ User UserInfoManager::getUser(int UID)
     if(jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
-    QString avatarString = jsonObject["avatar"].toString();
-    // 将Base64字符串转换为QPixmap
-    QByteArray byteArray = QByteArray::fromBase64(avatarString.toUtf8());
-    QPixmap avatar;
-    if (!byteArray.isEmpty()) {
-        avatar.loadFromData(byteArray);
-    }
-    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString(),avatar);
-    return user;
+    return User::toUser(jsonObject);
 }
 
 
@@ -313,13 +305,35 @@ User UserInfoManager::getUser(QString email) {
     if(jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
-    QString avatarString = jsonObject["avatar"].toString();
-    // 将Base64字符串转换为QPixmap
-    QByteArray byteArray = QByteArray::fromBase64(avatarString.toUtf8());
-    QPixmap avatar;
-    if (!byteArray.isEmpty()) {
-        avatar.loadFromData(byteArray);
-    }
-    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString(),avatar);
-    return user;
+    return User::toUser(jsonObject);
 }
+
+//获取用户的好友列表
+QVector<User> UserInfoManager::getContactList(int Uid)
+{
+    QVector<User> list;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("uid", QString::number(Uid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("/selectcontact/uid",postData);
+    QJsonArray userArray = jsonDocument.array();
+    for(const QJsonValue &userValue:userArray)
+    {
+        QJsonObject userObject=userValue.toObject();
+        list.push_back(User::toUser(userObject));
+    }
+    return list;
+
+}
+
+
+
+
+
+
+
+
+
+

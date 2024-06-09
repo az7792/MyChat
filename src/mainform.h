@@ -22,6 +22,7 @@ public:
     explicit MainForm(QWidget *parent = nullptr);
     ~MainForm();
     User user;
+    contactmanager cmarger;
 
 private slots:
     void on_contactButton_clicked();

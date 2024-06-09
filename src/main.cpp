@@ -5,7 +5,7 @@
 #include <QBuffer>
 #include <QPushButton>
 #include "chatwebsocket.h"
-#include "mainwindow.h"
+#include "mainform.h"
 #include "chatform.h"
 #include "mainform.h"
 #include "userinfomanager.h"

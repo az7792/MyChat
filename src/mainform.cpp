@@ -20,11 +20,15 @@ MainForm::MainForm(QWidget *parent)
     //ui->massageWidget->layout()->addWidget(current_g);
 
     contactForm *cform = new contactForm(ui->conatctWidget);
+    cform->formInit(user);
+
     groupForm *gform=new groupForm(ui->conatctWidget);
 
     ui->ContactStackedWidget->layout()->addWidget(cform);
     ui->ContactStackedWidget->layout()->addWidget(gform);
     ui->ContactStackedWidget->setCurrentIndex(2);
+
+
 
     connect(ui->contactButton,&QPushButton::clicked,this,&MainForm::on_contactButton_clicked);
     connect(ui->groupButton,&QPushButton::clicked,this,&MainForm::on_groupButton_clicked);
@@ -40,6 +44,7 @@ MainForm::~MainForm()
 void MainForm::on_contactButton_clicked()
 {
     ui->ContactStackedWidget->setCurrentIndex(2);
+
 }
 
 
@@ -66,6 +71,7 @@ void MainForm::open_the_groupWindow(int Gid)
     current_g->setName(QString::number(100+Gid));
     current_g->setGid(Gid);
     ui->massageWidget->layout()->addWidget(current_g);
+
 
 }
 

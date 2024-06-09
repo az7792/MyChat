@@ -50,3 +50,19 @@ void User::setAvatar(QPixmap avatar)
 {
     this->avatar = avatar;
 }
+
+User User::toUser(QJsonObject jsonObject)
+{
+    // 解析响应
+    if(jsonObject.isEmpty())
+        return User();
+    QString avatarString = jsonObject["avatar"].toString();
+    // 将Base64字符串转换为QPixmap
+    QByteArray byteArray = QByteArray::fromBase64(avatarString.toUtf8());
+    QPixmap avatar;
+    if (!byteArray.isEmpty()) {
+        avatar.loadFromData(byteArray);
+    }
+    User user(jsonObject["uid"].toInt(),jsonObject["username"].toString(),jsonObject["email"].toString(),avatar);
+    return user;
+}

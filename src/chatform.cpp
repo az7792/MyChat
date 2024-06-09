@@ -19,6 +19,7 @@ ChatForm::~ChatForm()
 
 void ChatForm::initChat(User fromUser, int toId, QString chatType)
 {
+
     //加载用户
     sendUser = fromUser;
     this->chatType = chatType;
@@ -26,6 +27,7 @@ void ChatForm::initChat(User fromUser, int toId, QString chatType)
     if(chatType == "user"){
         User recvUser = userInfoManager.getUser(toId);
         recvUsers.insert(recvUser.getUID(),recvUser);
+        ui->nameLabel->setText(recvUser.getUsername());
     }else{
         //加载群成员
     }

@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include<QJsonArray>
 #include "User.h"
 
 class UserInfoManager : public QObject
@@ -52,6 +53,8 @@ public:
 
     User getUser(int UID);
     User getUser(QString email);
+
+    QVector<User> getContactList(int Uid);
 
 private:
     explicit UserInfoManager(QObject *parent = nullptr) : QObject(parent) {

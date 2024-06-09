@@ -36,6 +36,11 @@ int contactMassage::getUid(){
     return Uid;
 }
 
+void contactMassage::setImg(QPixmap img)
+{
+    ui->label->setPixmap(img);
+}
+
 void contactMassage::mouseDoubleClickEvent(QMouseEvent *event) {
     if(event->button() == Qt::LeftButton) {
         qDebug()<<"鼠标双击了: "<<this->getName();

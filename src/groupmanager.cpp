@@ -1,3 +1,6 @@
 #include "groupmanager.h"
 
-groupmanager::groupmanager() {}
+groupmanager::groupmanager()
+{
+
+}

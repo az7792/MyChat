@@ -4,6 +4,9 @@
 #include <QPixmap>
 #include <QObject>
 #include <QString>
+#include<QJsonDocument>
+#include<QJsonObject>
+
 
 class User
 {
@@ -18,6 +21,8 @@ public:
     void setUsername(QString username);
     void setEmail(QString email);
     void setAvatar(QPixmap avatar);
+
+    static User toUser(QJsonObject jsonObject);
 private:
     int UID=-1;
     QString username;
