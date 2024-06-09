@@ -4,7 +4,7 @@
 #include "userinfomanager.h"
 
 #include <QWidget>
-
+#include <QFileDialog>
 namespace Ui {
 class RegisterForm;
 }
@@ -40,6 +40,8 @@ private slots:
     void on_captchaLineEdit_editingFinished();
 
     void on_returnPushButton_clicked();
+
+    void on_setAvatarPushButton_clicked();
 
 private:
     Ui::RegisterForm *ui;

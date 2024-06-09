@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/new/prefix1">
+    <qresource prefix="/img">
         <file>resources/1.png</file>
+        <file>resources/defaultAvatar.jpg</file>
+        <file>resources/logo.png</file>
     </qresource>
 </RCC>

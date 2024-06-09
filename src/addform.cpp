@@ -36,9 +36,9 @@ AddForm::AddForm(QWidget *parent) : QWidget(parent) {
 
     // 创建搜索提示图片和文字
     searchIconLabel = new QLabel(this);
-    QPixmap pixmap(":/new/prefix1/resources/1.png"); // 替换为你的搜索图标路径
+    QPixmap pixmap(":/img/resources/1.png"); // 替换为你的搜索图标路径
     if (pixmap.isNull()) {
-        qDebug() << "Failed to load image: :/new/prefix1/resources/1.png";
+        qDebug() << "Failed to load image: :/img/resources/1.png";
     } else {
         searchIconLabel->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio));
     }

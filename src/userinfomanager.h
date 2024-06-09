@@ -32,7 +32,7 @@ public:
     bool login(QString email, QString password);
     bool login(int UID, QString password);
 
-    bool registerUser(QString username, QString email, QString password);
+    bool registerUser(QString username, QString email, QString password,QPixmap pixmap);
     bool matchCaptcha(QString email, QString code);
     bool getCaptchaByEmail(QString email);
     bool deleteUser(int UID);

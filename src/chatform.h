@@ -8,6 +8,8 @@
 #include "sendbox.h"
 #include "recvbox.h"
 #include<QScrollBar>
+#include <QMap>
+#include <userinfomanager.h>
 namespace Ui {
 class ChatForm;
 }
@@ -20,8 +22,12 @@ public:
     explicit ChatForm(QWidget *parent = nullptr);
     ~ChatForm();
     ChatWebSocket &chatWebsocket = ChatWebSocket::getInstance();
-    int fromId,toId;
+    UserInfoManager &userInfoManager = UserInfoManager::getInstance();
+    void initChat(User fromUser,int toId,QString chatType);
+    int toId=-1;
     QString chatType;
+    User sendUser;
+    QMap<int,User> recvUsers;
 
 private slots:
     void on_SendPushButton_clicked();
