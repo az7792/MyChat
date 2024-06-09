@@ -12,11 +12,14 @@ FormManager::FormManager(QWidget *parent)
     // 创建忘记密码窗体，并设置为 FormManager 的子窗口
     resetPasswordForm = new ResetPasswordForm(this);
 
+    mainWIndow = new MainWindow(this);
+
     // 创建一个堆叠布局管理器
     stackedLayout = new QStackedLayout(this);
     stackedLayout->addWidget(loginForm); // 将登录窗体添加到布局中
     stackedLayout->addWidget(registerForm); // 将注册窗体添加到布局中
     stackedLayout->addWidget(resetPasswordForm); // 将忘记密码窗体添加到布局中
+    stackedLayout->addWidget(mainWIndow); //将主界面添加到布局当中
 
     // 设置堆叠布局到 FormManager 窗口
     setLayout(stackedLayout);
@@ -30,6 +33,7 @@ FormManager::FormManager(QWidget *parent)
     connect(registerForm, &RegisterForm::registered, this, &FormManager::showLoginForm);//注册成功后显示登录界面
 
     connect(resetPasswordForm,&ResetPasswordForm::showLoginForm,this,&FormManager::showLoginForm);//从 找回界面 返回 登录界面
+
     // 设置初始显示的窗体为登录窗体
     stackedLayout->setCurrentWidget(loginForm);
 }
@@ -51,8 +55,11 @@ void FormManager::showResetPasswordForm()
 
 void FormManager::showMainForm(User user)
 {
-    qDebug()<<user.getUsername()<<" "<<user.getEmail()<<" "<<user.getUID();
-    qDebug() << "切换主页面";
+
+    // qDebug()<<user.getUsername()<<" "<<user.getEmail()<<" "<<user.getUID();
+    // qDebug() << "切换主页面";
+    stackedLayout->setCurrentWidget(mainWIndow);
+    mainWIndow->user=user;
 }
 
 void FormManager::showLoginForm()

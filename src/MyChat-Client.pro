@@ -13,7 +13,10 @@ SOURCES += \
     chatwebsocket.cpp \
     FriendNotificationWindow.cpp \
     addform.cpp \
+    contactmanager.cpp \
     formmanager.cpp \
+    group.cpp \
+    groupmanager.cpp \
     loginform.cpp \
     main.cpp \
     mainform.cpp \
@@ -23,14 +26,22 @@ SOURCES += \
     resetpasswordform.cpp \
     sendbox.cpp \
     user.cpp \
-    userinfomanager.cpp
+    userinfomanager.cpp \
+    contactform.cpp \
+    contactmassage.cpp \
+    groupform.cpp \
+    groupmassage.cpp \
+    mainwindow.cpp
 
 HEADERS += \
     chatform.h \
     chatwebsocket.h \
     FriendNotificationWindow.h \
     addform.h \
+    contactmanager.h \
     formmanager.h \
+    group.h \
+    groupmanager.h \
     logger.h \
     loginform.h \
     mainform.h \
@@ -40,7 +51,12 @@ HEADERS += \
     resetpasswordform.h \
     sendbox.h \
     user.h \
-    userinfomanager.h
+    userinfomanager.h \
+    contactform.h \
+    contactmassage.h \
+    groupform.h \
+    groupmassage.h \
+    mainwindow.h
 
 FORMS += \
     chatform.ui \
@@ -49,7 +65,12 @@ FORMS += \
     recvbox.ui \
     registerform.ui \
     resetpasswordform.ui \
-    sendbox.ui
+    sendbox.ui \
+    contactform.ui \
+    contactmassage.ui \
+    groupform.ui \
+    groupmassage.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

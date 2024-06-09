@@ -5,6 +5,7 @@
 #include <QStackedLayout>
 #include "loginform.h"
 #include "registerform.h"
+#include"mainwindow.h"
 #include "resetpasswordform.h"
 #include "user.h"
 class FormManager : public QWidget
@@ -25,6 +26,7 @@ private :
     RegisterForm *registerForm = nullptr;
     ResetPasswordForm *resetPasswordForm = nullptr;
     QStackedLayout *stackedLayout=nullptr;
+    MainWindow *mainWIndow=nullptr;
 };
 
 #endif // FORMMANAGER_H
