@@ -4,6 +4,9 @@
 #include <QWidget>
 #include<QVBoxLayout>
 #include<groupmassage.h>
+#include"user.h"
+#include"group.h"
+#include"userinfomanager.h"
 
 namespace Ui {
 class groupForm;
@@ -16,6 +19,10 @@ class groupForm : public QWidget
 public:
     explicit groupForm(QWidget *parent = nullptr);
     ~groupForm();
+
+    UserInfoManager &useIfo=UserInfoManager::getInstance();
+    User user;
+    void formInit(User user);
 
 
 

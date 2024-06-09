@@ -3,24 +3,27 @@
 
 #include <QObject>
 #include<qstring.h>
+#include<QJsonObject>
 
 class Group
 {
 public:
     Group();
-    Group(int GID,QString groupname,int ownerID);
+    Group(int groupid,QString groupname,int ownerid);
 
-    int getGID();
+    int getGroupid();
     int getOwnerid();
     QString getGroupname();
-    void setGID(int GID);
+    void setGroupid(int groupid);
     void setUsername(QString groupname);
     void setOwnerid(int ownerid);
 
+    static Group toGroup(QJsonObject jsonObject);
+
 
 private:
-    int GID=-1;
-    int ownerID = -1;
+    int groupid=-1;
+    int ownerid = -1;
     QString groupname;
 };
 

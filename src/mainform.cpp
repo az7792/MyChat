@@ -23,6 +23,7 @@ MainForm::MainForm(QWidget *parent)
     cform->formInit(user);
 
     groupForm *gform=new groupForm(ui->conatctWidget);
+    gform->formInit(user);
 
     ui->ContactStackedWidget->layout()->addWidget(cform);
     ui->ContactStackedWidget->layout()->addWidget(gform);
@@ -54,7 +55,7 @@ void MainForm::on_groupButton_clicked()
 }
 
 
-//待修改
+
 void MainForm::open_the_chatWindow(int Uid)
 {
     ui->massageWidget->initChat(user,Uid,"user");
@@ -64,13 +65,8 @@ void MainForm::open_the_chatWindow(int Uid)
 //待修改
 void MainForm::open_the_groupWindow(int Gid)
 {
-
-    ui->massageWidget->layout()->removeWidget(current_g);
-    ui->massageWidget->layout()->removeWidget(current_c);
-    ui->massageWidget->layout()->update();
-    current_g->setName(QString::number(100+Gid));
-    current_g->setGid(Gid);
-    ui->massageWidget->layout()->addWidget(current_g);
+    //以下暂用用户聊天界面代替
+    ui->massageWidget->initChat(user,Gid,"Group");
 
 
 }

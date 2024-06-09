@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include<QJsonArray>
 #include "User.h"
+#include "group.h"
 
 class UserInfoManager : public QObject
 {
@@ -55,6 +56,7 @@ public:
     User getUser(QString email);
 
     QVector<User> getContactList(int Uid);
+    QVector<Group> getGroupList(int Uid);
 
 private:
     explicit UserInfoManager(QObject *parent = nullptr) : QObject(parent) {

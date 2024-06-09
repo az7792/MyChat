@@ -25,7 +25,6 @@ public:
 
     UserInfoManager &useIfo=UserInfoManager::getInstance();
     User user;
-
     void formInit(User user);
 
 private:

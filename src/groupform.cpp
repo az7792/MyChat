@@ -6,14 +6,6 @@ groupForm::groupForm(QWidget *parent)
     , ui(new Ui::groupForm)
 {
     ui->setupUi(this);
-
-    for(int i=10;i<=20;i++){
-        groupMassage *tempcon=new groupMassage(ui->groupScrollArea);
-        tempcon->setName(QString::number(i));
-        tempcon->setGid(i+1000);
-        connect(tempcon,&groupMassage::doubleClicked,this,&groupForm::passContactGid);
-        ui->groupScrollAreaWidgetContents->layout()->addWidget(tempcon);
-    }
 }
 
 groupForm::~groupForm()
@@ -21,4 +13,19 @@ groupForm::~groupForm()
     delete ui;
 }
 
+void groupForm::formInit(User user)
+{
+
+    QVector<Group> cList=useIfo.getGroupList(user.getUID());
+
+    for(Group it:cList)
+    {
+        groupMassage *tempcon=new groupMassage(ui->groupScrollArea);
+        tempcon->setGid(it.getGroupid());
+        tempcon->setName(it.getGroupname());
+        qDebug()<<"群组id:"<<it.getGroupid();
+        connect(tempcon,&groupMassage::doubleClicked,this,&groupForm::passContactGid);
+        ui->groupScrollAreaWidgetContents->layout()->addWidget(tempcon);
+    }
+}
 

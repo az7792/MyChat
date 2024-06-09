@@ -328,6 +328,24 @@ QVector<User> UserInfoManager::getContactList(int Uid)
 
 }
 
+QVector<Group> UserInfoManager::getGroupList(int Uid)
+{
+    QVector<Group> list;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("uid", QString::number(Uid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("/getgroups/uid",postData);
+    QJsonArray groupArray = jsonDocument.array();
+    for(const QJsonValue &groupValue:groupArray)
+    {
+        QJsonObject groupObject=groupValue.toObject();
+        list.push_back(Group::toGroup(groupObject));
+    }
+    return list;
+}
+
 
 
 
