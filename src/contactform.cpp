@@ -8,10 +8,10 @@ contactForm::contactForm(QWidget *parent)
     ui->setupUi(this);
 
 
-    for(int i=1;i<=10;i++){
+    for(int i=1;i<=20;i++){
         contactMassage *tempcon=new contactMassage(ui->contactScrollArea);
         tempcon->setName(QString::number(i));
-        tempcon->setUid(i+1000);
+        tempcon->setUid(i);
         connect(tempcon,&contactMassage::doubleClicked,this,&contactForm::passContactUid);
         ui->conatctScrollAreaWidgetContents->layout()->addWidget(tempcon);
     }

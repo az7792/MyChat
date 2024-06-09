@@ -11,14 +11,14 @@ FormManager::FormManager(QWidget *parent)
     // 创建忘记密码窗体，并设置为 FormManager 的子窗口
     resetPasswordForm = new ResetPasswordForm(this);
 
-    mainWIndow = new MainWindow(this);
+    mainForm = new MainForm(this);
 
     // 创建一个堆叠布局管理器
     stackedLayout = new QStackedLayout(this);
     stackedLayout->addWidget(loginForm); // 将登录窗体添加到布局中
     stackedLayout->addWidget(registerForm); // 将注册窗体添加到布局中
     stackedLayout->addWidget(resetPasswordForm); // 将忘记密码窗体添加到布局中
-    //stackedLayout->addWidget(mainWIndow); //将主界面添加到布局当中
+    stackedLayout->addWidget(mainForm); //将主界面添加到布局当中
 
     // 设置堆叠布局到 FormManager 窗口
     setLayout(stackedLayout);
@@ -59,9 +59,9 @@ void FormManager::showMainForm(User user)
     // qDebug() << "切换主页面";
 
     web.connectToServer(QUrl("ws://localhost:8080/chat/"+QString::number(user.getUID())));
-    this->hide();
-    mainWIndow->user=user;
-    mainWIndow->show();
+    stackedLayout->setCurrentWidget(mainForm);
+    mainForm->user=user;
+    mainForm->show();
 }
 
 void FormManager::showLoginForm()

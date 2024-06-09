@@ -30,8 +30,7 @@ SOURCES += \
     contactform.cpp \
     contactmassage.cpp \
     groupform.cpp \
-    groupmassage.cpp \
-    mainwindow.cpp
+    groupmassage.cpp
 
 HEADERS += \
     chatform.h \
@@ -55,8 +54,7 @@ HEADERS += \
     contactform.h \
     contactmassage.h \
     groupform.h \
-    groupmassage.h \
-    mainwindow.h
+    groupmassage.h
 
 FORMS += \
     chatform.ui \
@@ -69,8 +67,7 @@ FORMS += \
     contactform.ui \
     contactmassage.ui \
     groupform.ui \
-    groupmassage.ui \
-    mainwindow.ui
+    groupmassage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

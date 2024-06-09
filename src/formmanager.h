@@ -5,7 +5,7 @@
 #include <QStackedLayout>
 #include "loginform.h"
 #include "registerform.h"
-#include"mainwindow.h"
+#include"mainform.h"
 #include "resetpasswordform.h"
 #include "user.h"
 #include"chatwebsocket.h"
@@ -29,7 +29,7 @@ private :
     RegisterForm *registerForm = nullptr;
     ResetPasswordForm *resetPasswordForm = nullptr;
     QStackedLayout *stackedLayout=nullptr;
-    MainWindow *mainWIndow=nullptr;
+    MainForm *mainForm=nullptr;
 };
 
 #endif // FORMMANAGER_H
