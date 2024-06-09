@@ -1,5 +1,5 @@
 #include "user.h"
-
+#include <QDebug>
 User::User(int UID, QString username, QString email,QPixmap avatar)
     : UID(UID), username(username), email(email),avatar(avatar)
 {

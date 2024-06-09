@@ -24,7 +24,7 @@ public:
     ChatWebSocket &chatWebsocket = ChatWebSocket::getInstance();
     UserInfoManager &userInfoManager = UserInfoManager::getInstance();
     void initChat(User fromUser,int toId,QString chatType);
-    int toId;
+    int toId=-1;
     QString chatType;
     User sendUser;
     QMap<int,User> recvUsers;

@@ -90,7 +90,7 @@ bool UserInfoManager::registerUser(QString username, QString email, QString pass
     pixmap.save(&buffer, "JPG"); // 保存为 JPG 格式
     buffer.close();
     QString base64String = byteArray.toBase64();
-
+    base64String = QUrl::toPercentEncoding(base64String);
     //注册请求
     // 构造参数
     QUrlQuery postData;
