@@ -8,6 +8,12 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include "userinfomanager.h"
+#include "contactmassage.h"
+#include <QObject>
+
 
 class AddForm : public QWidget
 {
@@ -15,12 +21,14 @@ class AddForm : public QWidget
 
 public:
     explicit AddForm(QWidget *parent = nullptr);
+    UserInfoManager &userinfomanage = UserInfoManager::getInstance();
 
 private slots:
     void onFindAllButtonClicked();
     void onFindUserButtonClicked();
     void onFindGroupButtonClicked();
     void onSearchButtonClicked();
+
 
 private:
     QPushButton *findAllButton;
@@ -31,6 +39,7 @@ private:
     QLabel *searchIconLabel;
     QLabel *searchHintLabel;
     QStackedWidget *contentStack;
+
 
     void updatePlaceholderText();
     void updateStyles();
