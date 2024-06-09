@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QWebSocket>
+#include <message.h>
 class ChatWebSocket : public QObject
 {
     Q_OBJECT
@@ -13,9 +14,9 @@ public:
     }
     void connectToServer(const QUrl &url);
     void disconnectFromServer();
-    void sendMessage(int from,int to,const QString &message,QString receiverType);
+    void sendMessage(Message message);
 signals:
-
+    void textMessageReceived(const QString &message);
 public slots:
     void onConnected();
     void onDisconnected();

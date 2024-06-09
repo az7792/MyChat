@@ -27,24 +27,14 @@ void ChatWebSocket::disconnectFromServer()
     webSocket->close();
 }
 
-void ChatWebSocket::sendMessage(int from,int to,const QString &message,QString receiverType)
+void ChatWebSocket::sendMessage(Message message)
 {
-    QJsonObject json;
-    json["from"] = from;
-    json["to"] = to;
-    json["message"] = message;
-    json["receiverType"] = receiverType;
-
-    QJsonDocument doc(json);
-    QString jsonString = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
-    qDebug()<<jsonString;
-    webSocket->sendTextMessage(jsonString);
+    webSocket->sendTextMessage(message.toJsonString());
 }
 
 void ChatWebSocket::onConnected()
 {
     qDebug()<<"连接成功";
-    this->sendMessage(1,1,"abbb","group");
 }
 
 void ChatWebSocket::onDisconnected()
@@ -54,5 +44,6 @@ void ChatWebSocket::onDisconnected()
 
 void ChatWebSocket::onTextMessageReceived(const QString &message)
 {
-    qDebug()<<"收到消息："+message;
+    emit textMessageReceived(message);
+    //存消息
 }

@@ -14,8 +14,12 @@ SOURCES += \
     formmanager.cpp \
     loginform.cpp \
     main.cpp \
+    mainform.cpp \
+    message.cpp \
+    recvbox.cpp \
     registerform.cpp \
     resetpasswordform.cpp \
+    sendbox.cpp \
     user.cpp \
     userinfomanager.cpp
 
@@ -25,16 +29,23 @@ HEADERS += \
     formmanager.h \
     logger.h \
     loginform.h \
+    mainform.h \
+    message.h \
+    recvbox.h \
     registerform.h \
     resetpasswordform.h \
+    sendbox.h \
     user.h \
     userinfomanager.h
 
 FORMS += \
     chatform.ui \
     loginform.ui \
+    mainform.ui \
+    recvbox.ui \
     registerform.ui \
-    resetpasswordform.ui
+    resetpasswordform.ui \
+    sendbox.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
