@@ -1,7 +1,6 @@
 #include "formmanager.h"
 #include "addform.h"
 #include "FriendNotificationWindow.h"
-         "
 #include <QApplication>
 #include <QBuffer>
 #include <QPushButton>
@@ -27,14 +26,14 @@ int main(int argc, char *argv[])
     // web.disconnectFromServer();
     // MainWindow w;
     // w.show();
-    ChatWebSocket &web = ChatWebSocket::getInstance();
-    web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
+    // ChatWebSocket &web = ChatWebSocket::getInstance();
+    // web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
 
-    UserInfoManager &us = UserInfoManager::getInstance();
-    ChatForm tmp;
-    User sendUser = us.getUser(1);
-    tmp.initChat(sendUser, 19, "user");
-    tmp.show();
+    // UserInfoManager &us = UserInfoManager::getInstance();
+    // ChatForm tmp;
+    // User sendUser = us.getUser(1);
+    // tmp.initChat(sendUser, 19, "user");
+    // tmp.show();
     // QPixmap ttt = sendUser.getAvatar();
     // 指定输出目录
     // ttt.save("C:/Users/li'qi/Desktop/convertedImage13.jpg", "JPG");

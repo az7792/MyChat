@@ -8,12 +8,15 @@
 #include"mainwindow.h"
 #include "resetpasswordform.h"
 #include "user.h"
+#include"chatwebsocket.h"
 class FormManager : public QWidget
 {
     Q_OBJECT
 public:
     explicit FormManager(QWidget *parent = nullptr);
     ~FormManager();
+
+    ChatWebSocket &web = ChatWebSocket::getInstance();
 signals:
 
 private slots:

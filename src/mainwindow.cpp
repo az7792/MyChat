@@ -55,13 +55,7 @@ void MainWindow::on_groupButton_clicked()
 //待修改
 void MainWindow::open_the_chatWindow(int Uid)
 {
-    ui->massageWidget->layout()->removeWidget(current_g);
-    ui->massageWidget->layout()->removeWidget(current_c);
-    ui->massageWidget->layout()->update();
-    current_c->setName(QString::number(100+Uid));
-    current_c->setUid(Uid);
-    ui->massageWidget->layout()->addWidget(current_c);
-
+    ui->massageWidget->initChat(user,19,"user");
 }
 
 

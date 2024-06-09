@@ -1,5 +1,4 @@
 #include "formmanager.h"
-
 FormManager::FormManager(QWidget *parent)
     : QWidget(parent)
 {
@@ -19,7 +18,7 @@ FormManager::FormManager(QWidget *parent)
     stackedLayout->addWidget(loginForm); // 将登录窗体添加到布局中
     stackedLayout->addWidget(registerForm); // 将注册窗体添加到布局中
     stackedLayout->addWidget(resetPasswordForm); // 将忘记密码窗体添加到布局中
-    stackedLayout->addWidget(mainWIndow); //将主界面添加到布局当中
+    //stackedLayout->addWidget(mainWIndow); //将主界面添加到布局当中
 
     // 设置堆叠布局到 FormManager 窗口
     setLayout(stackedLayout);
@@ -58,8 +57,11 @@ void FormManager::showMainForm(User user)
 
     // qDebug()<<user.getUsername()<<" "<<user.getEmail()<<" "<<user.getUID();
     // qDebug() << "切换主页面";
-    stackedLayout->setCurrentWidget(mainWIndow);
+
+    web.connectToServer(QUrl("ws://localhost:8080/chat/"+QString::number(user.getUID())));
+    this->hide();
     mainWIndow->user=user;
+    mainWIndow->show();
 }
 
 void FormManager::showLoginForm()
