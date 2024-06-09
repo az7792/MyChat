@@ -14,12 +14,14 @@ int main(int argc, char *argv[])
     //MainForm ttt;
     //ttt.show();
 
-    ChatWebSocket &web = ChatWebSocket::getInstance();
-    web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
-    ChatForm tmp;
-    tmp.fromId=1,tmp.toId=2,tmp.chatType="user";
-    tmp.show();
+    //ChatWebSocket &web = ChatWebSocket::getInstance();
+    //web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
+    //ChatForm tmp;
+    //tmp.fromId=1,tmp.toId=2,tmp.chatType="user";
+    //tmp.show();
     //web.sendMessage("abc");
     //web.disconnectFromServer();
+    //RegisterForm tmp;
+    //tmp.show();
     return a.exec();
 }

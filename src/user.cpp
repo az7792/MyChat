@@ -1,7 +1,7 @@
 #include "user.h"
 
-User::User(int UID, QString username, QString email)
-    : UID(UID), username(username), email(email)
+User::User(int UID, QString username, QString email,QPixmap avatar)
+    : UID(UID), username(username), email(email),avatar(avatar)
 {
 
 }
@@ -26,6 +26,11 @@ QString User::getEmail()
     return email;
 }
 
+QPixmap User::getAvatar()
+{
+    return avatar;
+}
+
 // 设置UID
 void User::setUID(int UID) {
     this->UID = UID;
@@ -39,4 +44,9 @@ void User::setUsername(QString username) {
 // 设置邮箱
 void User::setEmail(QString email) {
     this->email = email;
+}
+
+void User::setAvatar(QPixmap avatar)
+{
+    this->avatar = avatar;
 }

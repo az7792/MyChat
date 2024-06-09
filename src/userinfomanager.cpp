@@ -1,5 +1,6 @@
 #include "userinfomanager.h"
 
+#include <QBuffer>
 #include <QUrlQuery>
 
 //发POST请求
@@ -71,7 +72,7 @@ bool UserInfoManager::login(int UID, QString password) {
 }
 
 //注册请求
-bool UserInfoManager::registerUser(QString username, QString email, QString password) {
+bool UserInfoManager::registerUser(QString username, QString email, QString password,QPixmap pixmap) {
     //验证数据格式
     if(isUsernameValid(username)==false)return false;
     if(isEmailValid(email)==false)return false;
@@ -81,12 +82,22 @@ bool UserInfoManager::registerUser(QString username, QString email, QString pass
     if(isEmailExist(email)==true)return false;
     password = encryptPassword(password);
 
+
+    //pixmap转base64
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer, "JPG"); // 保存为 JPG 格式
+    buffer.close();
+    QString base64String = byteArray.toBase64();
+
     //注册请求
     // 构造参数
     QUrlQuery postData;
     postData.addQueryItem("username",  username);
     postData.addQueryItem("email",  email);
     postData.addQueryItem("password", password);
+    postData.addQueryItem("avatar", base64String);
 
     QJsonDocument jsonDocument = sendPostRequest("register",postData);
 
@@ -277,7 +288,14 @@ User UserInfoManager::getUser(int UID)
     if(jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
-    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString());
+    QString avatarString = jsonObject["avatar"].toString();
+    // 将Base64字符串转换为QPixmap
+    QByteArray byteArray = QByteArray::fromBase64(avatarString.toUtf8());
+    QPixmap avatar;
+    if (!byteArray.isEmpty()) {
+        avatar.loadFromData(byteArray);
+    }
+    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString(),avatar);
     return user;
 }
 
@@ -295,6 +313,13 @@ User UserInfoManager::getUser(QString email) {
     if(jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
-    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString());
+    QString avatarString = jsonObject["avatar"].toString();
+    // 将Base64字符串转换为QPixmap
+    QByteArray byteArray = QByteArray::fromBase64(avatarString.toUtf8());
+    QPixmap avatar;
+    if (!byteArray.isEmpty()) {
+        avatar.loadFromData(byteArray);
+    }
+    User user(jsonObject["uid"].toInt(),jsonObject["email"].toString(),jsonObject["username"].toString(),avatar);
     return user;
 }

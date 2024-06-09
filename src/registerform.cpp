@@ -112,9 +112,10 @@ void RegisterForm::on_registerPushButton_clicked()
         QMessageBox::warning(this,"","注册失败,验证码错误");
         return;
     }
-    success = userInfoManager.registerUser(username,email,password);
+    success = userInfoManager.registerUser(username,email,password,ui->avatarLabel->pixmap());
     if(success){
         emit registered();
+        QMessageBox::information(this, "注册成功", "注册成功");
     }else{
         QMessageBox::warning(this, "注册失败", "注册失败，请重试");
     }
@@ -178,5 +179,24 @@ void RegisterForm::on_captchaLineEdit_editingFinished()
 void RegisterForm::on_returnPushButton_clicked()
 {
     emit showLoginForm();
+}
+
+
+void RegisterForm::on_setAvatarPushButton_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, "选择图片", "", "图片文件 (*.png *.jpg *.jpeg)");
+    if (!filePath.isEmpty()) {
+        QFile file(filePath);
+        if (file.size() > 512 * 1024) { // 文件大小超过 515KB
+            QMessageBox::warning(this, "警告", "图片大小不能超过512KB");
+            return;
+        }
+        QPixmap pixmap(filePath);
+        if (!pixmap.isNull()) {
+            ui->avatarLabel->setPixmap(pixmap.scaled(ui->avatarLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        } else {
+            ui->avatarLabel->setText("无法加载图片");
+        }
+    }
 }
 

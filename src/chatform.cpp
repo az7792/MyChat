@@ -17,6 +17,19 @@ ChatForm::~ChatForm()
     delete ui;
 }
 
+void ChatForm::initChat(User fromUser, int toId, QString chatType)
+{
+    //加载用户
+    sendUser = fromUser;
+    this->chatType = chatType;
+    if(chatType == "user"){
+        User recvUser = userInfoManager.getUser(toId);
+        recvUsers.insert(recvUser.getUID(),recvUser);
+    }else{
+        //加载群成员
+    }
+}
+
 void ChatForm::on_SendPushButton_clicked()//发送
 {
     if(ui->plainTextEdit->toPlainText()=="")
