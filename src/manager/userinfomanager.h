@@ -27,8 +27,8 @@ public:
     ~UserInfoManager() = default;
 
     // 定义主机名和端口号常量
-    const QString HOST_NAME = "localhost";
-    const int PORT = 8080;
+    const QString HOST_NAME = "123.56.155.4";
+    const int PORT = 8088;
     const QString BASE_URL = "http://" + HOST_NAME + ":" + QString::number(PORT) + "/";
 
     bool login(QString email, QString password);

@@ -58,7 +58,7 @@ void FormManager::showMainForm(User user)
     // qDebug()<<user.getUsername()<<" "<<user.getEmail()<<" "<<user.getUID();
     // qDebug() << "切换主页面";
 
-    web.connectToServer(QUrl("ws://localhost:8080/chat/"+QString::number(user.getUID())));
+    web.connectToServer(QUrl("ws://123.56.155.4:8088/chat/"+QString::number(user.getUID())));
     stackedLayout->setCurrentWidget(mainForm);
     mainForm->user=user;
     mainForm->formInit(user);
