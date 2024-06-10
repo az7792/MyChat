@@ -1,4 +1,4 @@
-QT       += core gui network websockets
+QT       += core gui network websockets sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,7 @@ SOURCES += \
     FriendNotificationWindow.cpp \
     addform.cpp \
     contactmanager.cpp \
+    databasemanager.cpp \
     formmanager.cpp \
     group.cpp \
     groupmanager.cpp \
@@ -21,6 +22,8 @@ SOURCES += \
     main.cpp \
     mainform.cpp \
     message.cpp \
+    messagebox.cpp \
+    messagelistform.cpp \
     recvbox.cpp \
     registerform.cpp \
     resetpasswordform.cpp \
@@ -38,6 +41,7 @@ HEADERS += \
     FriendNotificationWindow.h \
     addform.h \
     contactmanager.h \
+    databasemanager.h \
     formmanager.h \
     group.h \
     groupmanager.h \
@@ -45,6 +49,8 @@ HEADERS += \
     loginform.h \
     mainform.h \
     message.h \
+    messagebox.h \
+    messagelistform.h \
     recvbox.h \
     registerform.h \
     resetpasswordform.h \
@@ -60,6 +66,8 @@ FORMS += \
     chatform.ui \
     loginform.ui \
     mainform.ui \
+    messagebox.ui \
+    messagelistform.ui \
     recvbox.ui \
     registerform.ui \
     resetpasswordform.ui \

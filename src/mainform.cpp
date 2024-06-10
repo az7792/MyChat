@@ -24,8 +24,10 @@ MainForm::MainForm(QWidget *parent)
     groupForm *gform=new groupForm(ui->conatctWidget);
     gform->formInit(user);
 
+    msgList = new messageListForm(ui->conatctWidget);
+    ui->ContactStackedWidget->layout()->addWidget(msgList);
     ui->ContactStackedWidget->layout()->addWidget(cform);
-    ui->ContactStackedWidget->layout()->addWidget(gform);
+    ui->ContactStackedWidget->layout()->addWidget(gform);    
     ui->ContactStackedWidget->setCurrentIndex(2);
 
     connect(ui->contactButton, &QPushButton::clicked, this, &MainForm::on_contactButton_clicked);
@@ -43,13 +45,13 @@ MainForm::~MainForm()
 
 void MainForm::on_contactButton_clicked()
 {
-    ui->ContactStackedWidget->setCurrentIndex(2);
+    ui->ContactStackedWidget->setCurrentIndex(3);
 
 }
 
 void MainForm::on_groupButton_clicked()
 {
-    ui->ContactStackedWidget->setCurrentIndex(3);
+    ui->ContactStackedWidget->setCurrentIndex(4);
 }
 
 void MainForm::open_the_chatWindow(int Uid)
@@ -63,6 +65,7 @@ void MainForm::open_the_groupWindow(int Gid)
     ui->massageWidget->initChat(user,Gid,"Group");
 }
 
+<<<<<<< HEAD
 void MainForm::on_addButton_clicked()
 {
     // 如果窗口已存在，先关闭它
@@ -102,3 +105,11 @@ void MainForm::on_applyButton_clicked()
         notificationWindow = nullptr; // 重置指针
     });
 }
+=======
+
+void MainForm::on_massageButton_clicked()
+{
+    ui->ContactStackedWidget->setCurrentIndex(2);
+}
+
+>>>>>>> feature3

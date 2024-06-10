@@ -16,6 +16,7 @@ public:
     QString text;
     QString type;
     QDateTime sentTime;
+    int isRead = 0;
 
     QString toJsonString();
 
