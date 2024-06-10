@@ -178,8 +178,8 @@ void AddForm::onSearchButtonClicked() {
         }
         else
         {
-            qDebug() << "User not found.";
-            QLabel *notFoundLabel = new QLabel("User not found", this);
+            //qDebug() << "Group not found.";
+            QLabel *notFoundLabel = new QLabel("Group not found", this);
             notFoundLabel->setAlignment(Qt::AlignCenter);
             contentStack->addWidget(notFoundLabel);
             contentStack->setCurrentWidget(notFoundLabel);
@@ -241,7 +241,6 @@ void AddForm::updatePlaceholderText() {
         searchLineEdit->setPlaceholderText("GroupId");
     }
 }
-
 void AddForm::clearPreviousSearchResult() {
     if (currentContactWidget != nullptr) {
         contentStack->removeWidget(currentContactWidget);

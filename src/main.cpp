@@ -8,10 +8,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FormManager formmanger;
-    formmanger.show();
-    // AddForm addform;
-    // addform.show();
+    // FormManager formmanger;
+    // formmanger.show();
+    AddForm addform;
+    addform.show();
     // DatabaseManager::initializeDatabase("messages.db");
     // Message msg(1,1,2,"user","message","text",QDateTime::currentDateTime());
     // //DatabaseManager::saveMessageToDatabase(msg);
