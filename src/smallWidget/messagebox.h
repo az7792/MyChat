@@ -25,6 +25,8 @@ public:
     QString chatType;
     QPixmap avatar;
     int id;
+    int uid;
+
     void addMessage(Message message);
     void setTime(const QDateTime &newTime);
     void setNumUnread(int newNumUnread);

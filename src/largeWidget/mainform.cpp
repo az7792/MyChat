@@ -33,6 +33,8 @@ MainForm::MainForm(QWidget *parent)
     connect(gform, &groupForm::passContactGid, this, &MainForm::open_the_groupWindow);
     connect(ui->addButton, &QPushButton::clicked, this, &MainForm::on_searchButton_clicked);
     connect(ui->applyButton, &QPushButton::clicked, this, &MainForm::on_applyButton_clicked);
+    connect(msgList,&messageListForm::passMessageBox,ui->massageWidget,&ChatForm::onMessageBoxPass);
+    connect(ui->massageWidget,&ChatForm::saveToMessageBox,msgList,&messageListForm::updataMessageBox);
 }
 
 MainForm::~MainForm()
@@ -55,9 +57,10 @@ void MainForm::on_groupButton_clicked()
 
 void MainForm::open_the_chatWindow(int Uid)
 {
-    ui->massageWidget->initChat(user, Uid, "user");
+    //ui->massageWidget->initChat(user, Uid, "user");
     User tuser=info.getUser(Uid);
     MessageBox *newBox=new MessageBox;
+    newBox->uid = user.getUID();
     newBox->setAvatar(tuser.getAvatar());
     newBox->setId(tuser.getUID());
     newBox->setName(tuser.getUsername());
@@ -69,9 +72,12 @@ void MainForm::open_the_chatWindow(int Uid)
 void MainForm::open_the_groupWindow(int Gid)
 {
     //以下暂用用户聊天界面代替
-    ui->massageWidget->initChat(user,Gid,"group");
+    //ui->massageWidget->initChat(user,Gid,"group");
+    qDebug()<<Gid;
     Group tgroup=info.getGroupByGid(Gid);
+    qDebug()<<tgroup.getGroupid();
     MessageBox *newBox=new MessageBox;
+    newBox->uid = user.getUID();
     newBox->setId(tgroup.getGroupid());
     newBox->setName(tgroup.getGroupname());
     newBox->setChatType("group");
@@ -126,6 +132,7 @@ void MainForm::on_massageButton_clicked()
 void MainForm::formInit(User newUser)
 {
     user=newUser;
+    msgList->sendUser = user;
     gform->formInit(user);
     cform->formInit(user);
 }

@@ -435,7 +435,7 @@ Group UserInfoManager::getGroupByGid(int Gid)
     postData.addQueryItem("groupid", QString::number(Gid));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("/selectgroup/uid", postData);
+    QJsonDocument jsonDocument = sendPostRequest("selectgroup/uid", postData);
     // 解析响应
     if (jsonDocument.isEmpty())
         return Group();

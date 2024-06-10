@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include "smallWidget/messagebox.h"
+#include "entity/user.h"
+#include <QMap>
+#include <QPair>
+#include "manager/userinfomanager.h"
 namespace Ui {
 class messageListForm;
 }
@@ -14,7 +18,12 @@ class messageListForm : public QWidget
 public:
     explicit messageListForm(QWidget *parent = nullptr);
     ~messageListForm();
-    void addMessageBox(MessageBox *messagebox);
+    UserInfoManager &userInfoManager = UserInfoManager::getInstance();
+    QMap<QPair<int,QString>,MessageBox*> messageBoxMap;
+    void addMessageBox(MessageBox *messageBox);
+    User sendUser;
+public slots:
+    void updataMessageBox(Message message);
 signals:
     void passMessageBox(MessageBox *messageBox);
 private:
