@@ -328,6 +328,7 @@ QVector<User> UserInfoManager::getContactList(int Uid)
 
 }
 
+//获取用户所有群
 QVector<Group> UserInfoManager::getGroupList(int Uid)
 {
     QVector<Group> list;
@@ -336,7 +337,7 @@ QVector<Group> UserInfoManager::getGroupList(int Uid)
     postData.addQueryItem("uid", QString::number(Uid));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("/getgroups/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("getgroups/uid",postData);
     QJsonArray groupArray = jsonDocument.array();
     for(const QJsonValue &groupValue:groupArray)
     {
@@ -345,6 +346,46 @@ QVector<Group> UserInfoManager::getGroupList(int Uid)
     }
     return list;
 }
+
+//根据群id获取用户
+QVector<User> UserInfoManager::getGroupMembers(int Gid)
+{
+    qDebug()<<"______________";
+    QVector<User> list;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("groupid", QString::number(Gid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("getgroupmembers/user",postData);
+    QJsonArray userArray = jsonDocument.array();
+    for(const QJsonValue &userValue:userArray)
+    {
+        QJsonObject userObject=userValue.toObject();
+        list.push_back(User::toUser(userObject));
+    }
+    return list;
+
+}
+
+//根据群id获取群
+Group UserInfoManager::getGroupByGid(int Gid)
+{
+    Group group;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("uid", QString::number(Gid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("/selectgroup/uid",postData);
+    // 解析响应
+    if(jsonDocument.isEmpty())
+        return Group();
+    QJsonObject jsonObject = jsonDocument.object();
+    return Group::toGroup(jsonObject);
+}
+
+
 
 
 

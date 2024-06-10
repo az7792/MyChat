@@ -12,17 +12,15 @@ MainForm::MainForm(QWidget *parent)
     ui->setupUi(this);
 
     // 以下为测试用，将来删去
-    user.setUsername("user1");
-    user.setUID(1);
-    user.setEmail("1460014874@qq.com");
+    // user.setUsername("user1");
+    // user.setUID(1);
+    // user.setEmail("1460014874@qq.com");
     // 以上为测试用，将来删去
 
     // 创建 Contact 和 Group 界面
-    contactForm *cform = new contactForm(ui->conatctWidget);
-    cform->formInit(user);
+    cform = new contactForm(ui->conatctWidget);
+    gform=new groupForm(ui->conatctWidget);
 
-    groupForm *gform=new groupForm(ui->conatctWidget);
-    gform->formInit(user);
 
     msgList = new messageListForm(ui->conatctWidget);
     ui->ContactStackedWidget->layout()->addWidget(msgList);
@@ -106,4 +104,11 @@ void MainForm::on_applyButton_clicked()
 void MainForm::on_massageButton_clicked()
 {
     ui->ContactStackedWidget->setCurrentIndex(2);
+}
+
+void MainForm::formInit(User newUser)
+{
+    user=newUser;
+    gform->formInit(user);
+    cform->formInit(user);
 }
