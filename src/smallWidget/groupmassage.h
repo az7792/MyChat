@@ -16,6 +16,7 @@ class groupMassage : public QWidget
     Q_OBJECT
 
 public:
+
     explicit groupMassage(QWidget *parent = nullptr);
     ~groupMassage();
 

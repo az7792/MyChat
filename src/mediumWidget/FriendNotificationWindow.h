@@ -33,7 +33,6 @@ private:
     QPushButton *minimizeButton;
     QPushButton *maximizeButton;
     QPushButton *closeButton;
-    QPushButton *filterButton;
     QPushButton *deleteAllButton;
     QListWidget *notificationList;
 

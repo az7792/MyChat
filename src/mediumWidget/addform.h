@@ -14,21 +14,20 @@
 #include "smallWidget/contactmassage.h"
 #include <QObject>
 
-
 class AddForm : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit AddForm(QWidget *parent = nullptr);
-    UserInfoManager &userinfomanage = UserInfoManager::getInstance();
+    UserInfoManager &userinfomanage = UserInfoManager::getInstance(); // 获取单例实例
+    int status = 0;
 
 private slots:
     void onFindAllButtonClicked();
     void onFindUserButtonClicked();
     void onFindGroupButtonClicked();
     void onSearchButtonClicked();
-
 
 private:
     QPushButton *findAllButton;
@@ -39,10 +38,14 @@ private:
     QLabel *searchIconLabel;
     QLabel *searchHintLabel;
     QStackedWidget *contentStack;
+    QVBoxLayout *resultLayout; // 用于显示搜索结果的布局
 
+    contactMassage *contactMassageWidget = nullptr; // 当前的 contactMassage 对象
+    contactMassage *currentContactWidget = nullptr; // 当前显示的搜索结果 widget
 
     void updatePlaceholderText();
     void updateStyles();
+    void clearPreviousSearchResult(); // 新增的用于清除上次搜索结果的方法
 };
 
 #endif // ADDFORM_H
