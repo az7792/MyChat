@@ -18,6 +18,10 @@ void MessageBox::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         qDebug() << "左键点击";
+        emit clicked(this);
+        //标记为已读
+        for(auto v:messages)
+            v.isRead = 1;
     }
     else if (event->button() == Qt::RightButton)
     {
@@ -25,6 +29,17 @@ void MessageBox::mousePressEvent(QMouseEvent *event)
     }
     // 调用基类的 mousePressEvent 以确保默认处理
     QWidget::mousePressEvent(event);
+}
+
+void MessageBox::addMessage(Message message)
+{
+    messages.push_back(message);
+    if(message.isRead == 0)
+        setNumUnread(this->numUnread + 1);
+    else
+        setNumUnread(0);
+    setNewMessage(message.text);
+    setTime(message.sentTime);
 }
 
 void MessageBox::setTime(const QDateTime &newTime)

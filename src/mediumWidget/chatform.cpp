@@ -17,16 +17,19 @@ ChatForm::~ChatForm()
     delete ui;
 }
 
-void ChatForm::initChat(User fromUser, int toId, QString chatType)
-{
-    //加载用户
-    sendUser = fromUser;
-    addRecvUsers(toId,chatType);
-    //加载消息
-}
-
 void ChatForm::addRecvUsers(int toId, QString chatType)
 {
+    //清除之前的消息
+    QLayout *layout = ui->scrollAreaWidgetContents->layout();
+    if (layout) {
+        QLayoutItem *item;
+        while ((item = layout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+    }
+
+    //加载消息
     this->chatType = chatType;
     this->toId=toId;
     recvUsers.clear();
@@ -46,7 +49,7 @@ void ChatForm::addRecvUsers(int toId, QString chatType)
 
 void ChatForm::on_SendPushButton_clicked()//发送
 {
-    if(ui->plainTextEdit->toPlainText()=="" && toId==-1)
+    if(ui->plainTextEdit->toPlainText()=="" || toId==-1)
         return;
     QString text = ui->plainTextEdit->toPlainText();
     Message message(sendUser.getUID(),toId,chatType,text,"text");
@@ -64,33 +67,51 @@ void ChatForm::on_SendPushButton_clicked()//发送
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum());
     });
     //存储聊天
+    message.sentTime = QDateTime::currentDateTime();
+    message.isRead = 1;
+    emit saveToMessageBox(message);
 }
 
 void ChatForm::onTextMessageReceived(const QString &messageString)
 {
-    if(toId == -1){//还未选择聊天对象
-        //存消息
+    Message message = Message::toMessage(messageString);
+    if(toId == -1){
+        emit saveToMessageBox(message);
         return;
     }
+    if(message.receiverType != chatType){
+        emit saveToMessageBox(message);
+        return;
+    }else if(message.receiverType == "user" && message.fromUserUid != toId){
+        emit saveToMessageBox(message);
+        return;
+    }else if(message.receiverType == "group" && message.toReceiver != toId){
+        emit saveToMessageBox(message);
+        return;
+    }
+
     RecvBox *recvBox = new RecvBox(ui->scrollArea);
     recvBox->setBackgroundColor(QColor(0,153,255));
     recvBox->setBordetRadius(10);
     recvBox->setTextColor(Qt::white);
-    Message message = Message::toMessage(messageString);
     recvBox->setText(message.text);
     recvBox->setAvatar(recvUsers[message.fromUserUid].getAvatar());
     ui->scrollAreaWidgetContents->layout()->addWidget(recvBox);
     QTimer::singleShot(100, this, [this]() {
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum());
     });
+    message.isRead = 1;
+    emit saveToMessageBox(message);
 }
 
 void ChatForm::onMessageBoxPass(MessageBox *messageBox)
 {
-    ui->nameLabel->setText(messageBox->name);
-    toId = messageBox->id;
-    chatType = messageBox->chatType;
+    //加载用户
+    sendUser = userInfoManager.getUser(messageBox->uid);
+    toId = messageBox->id,chatType = messageBox->chatType;
+    //加载消息
     addRecvUsers(toId,chatType);
+    ui->nameLabel->setText(messageBox->name);
     for(auto v:messageBox->messages){
         if(v.fromUserUid == sendUser.getUID())
         {
@@ -117,5 +138,6 @@ void ChatForm::onMessageBoxPass(MessageBox *messageBox)
             });
         }
     }
+    messageBox->setNumUnread(0);
 }
 
