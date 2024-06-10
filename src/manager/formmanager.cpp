@@ -61,6 +61,7 @@ void FormManager::showMainForm(User user)
     web.connectToServer(QUrl("ws://localhost:8080/chat/"+QString::number(user.getUID())));
     stackedLayout->setCurrentWidget(mainForm);
     mainForm->user=user;
+    mainForm->formInit(user);
     qDebug()<<user.getUID();
     mainForm->show();
 }

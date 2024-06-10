@@ -24,6 +24,7 @@ void contactForm::formInit(User user)
         tempcon->setUid(it.getUID());
         tempcon->setName(it.getUsername());
         tempcon->setImg(it.getAvatar());
+        qDebug()<<"用户id:"<<it.getUID();
         connect(tempcon,&contactMassage::doubleClicked,this,&contactForm::passContactUid);
         ui->conatctScrollAreaWidgetContents->layout()->addWidget(tempcon);
     }
