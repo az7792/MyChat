@@ -2,6 +2,9 @@
 #include <QApplication>
 #include <QBuffer>
 #include <QPushButton>
+#include <mediumWidget/messagelistform.h>
+#include <smallWidget/messagebox.h>
+#include <QColor>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -21,6 +24,16 @@ int main(int argc, char *argv[])
 
     // MainForm ttt;
     // ttt.show();
+
+    // messageListForm tmp;
+    // MessageBox *box1 = new MessageBox();
+    // box1->setTime(QDateTime::currentDateTime());
+    // box1->setNewMessage("nihao");
+    // box1->setName("abc");
+    // box1->setNumUnread(5);
+    // box1->show();
+    // tmp.addMessageBox(box1);
+    // tmp.show();
 
     // ChatWebSocket &web = ChatWebSocket::getInstance();
     // web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
@@ -54,3 +67,5 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+
+//   az77927792

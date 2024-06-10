@@ -16,6 +16,14 @@ contactForm::~contactForm()
 void contactForm::formInit(User user)
 {
 
+    QLayout *layout = ui->conatctScrollAreaWidgetContents->layout();
+    if (layout) {
+        QLayoutItem *item;
+        while ((item = layout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+    }
     QVector<User> cList=useIfo.getContactList(user.getUID());
 
     for(User it:cList)
@@ -24,6 +32,7 @@ void contactForm::formInit(User user)
         tempcon->setUid(it.getUID());
         tempcon->setName(it.getUsername());
         tempcon->setImg(it.getAvatar());
+        qDebug()<<"用户id:"<<it.getUID();
         connect(tempcon,&contactMassage::doubleClicked,this,&contactForm::passContactUid);
         ui->conatctScrollAreaWidgetContents->layout()->addWidget(tempcon);
     }

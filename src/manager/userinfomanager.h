@@ -60,6 +60,8 @@ public:
 
     QVector<User> getContactList(int Uid);
     QVector<Group> getGroupList(int Uid);
+    Group getGroupByGid(int Gid);
+    QVector<User> getGroupMembers(int Gid);
 
 private:
     explicit UserInfoManager(QObject *parent = nullptr) : QObject(parent) {

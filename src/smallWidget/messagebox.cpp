@@ -12,6 +12,21 @@ MessageBox::~MessageBox()
     delete ui;
 }
 
+void MessageBox::mousePressEvent(QMouseEvent *event)
+{
+    // 处理鼠标单击事件
+    if (event->button() == Qt::LeftButton)
+    {
+        qDebug() << "左键点击";
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        qDebug() << "右键点击";
+    }
+    // 调用基类的 mousePressEvent 以确保默认处理
+    QWidget::mousePressEvent(event);
+}
+
 void MessageBox::setTime(const QDateTime &newTime)
 {
     time = newTime;
@@ -60,4 +75,14 @@ void MessageBox::setAvatar(const QPixmap &newAvatar)
 void MessageBox::setId(int newId)
 {
     id = newId;
+}
+
+void MessageBox::setBackgroundColor(const QColor &backgroundcolor)
+{
+    setStyleSheet(QString("#BGwidget{background-color: %1;}").arg(backgroundcolor.name()));
+}
+
+void MessageBox::setStyleSheet(const QString &style)
+{
+    QWidget::setStyleSheet(styleSheet()+style);
 }

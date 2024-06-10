@@ -15,6 +15,7 @@ messageListForm::~messageListForm()
 
 void messageListForm::addMessageBox(MessageBox *messageBox)
 {
+    connect(messageBox,&MessageBox::clicked,this,&messageListForm::passMessageBox);
     ui->scrollAreaWidgetContents->layout()->addWidget(messageBox);
 }
 

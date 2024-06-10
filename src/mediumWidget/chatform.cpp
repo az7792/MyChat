@@ -30,6 +30,7 @@ void ChatForm::initChat(User fromUser, int toId, QString chatType)
         ui->nameLabel->setText(recvUser.getUsername());
     }else{
         //加载群成员
+
     }
     //加载消息
 }

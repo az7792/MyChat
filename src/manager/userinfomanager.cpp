@@ -1,10 +1,9 @@
-#include "userinfomanager.h"
-
+#include "manager/userinfomanager.h"
 #include <QBuffer>
 #include <QUrlQuery>
 
-//发POST请求
-QJsonDocument UserInfoManager::sendPostRequest(QString endpoint,QUrlQuery postData)
+// 发POST请求
+QJsonDocument UserInfoManager::sendPostRequest(QString endpoint, QUrlQuery postData)
 {
     QNetworkRequest request(QUrl(BASE_URL + endpoint));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -17,10 +16,13 @@ QJsonDocument UserInfoManager::sendPostRequest(QString endpoint,QUrlQuery postDa
 
     // 解析响应
     QJsonDocument jsonDocument;
-    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError)
+    {
         QByteArray responseData = reply->readAll();
         jsonDocument = QJsonDocument::fromJson(responseData);
-    } else {
+    }
+    else
+    {
         qDebug() << "Error: " << reply->errorString();
     }
     reply->deleteLater();
@@ -28,9 +30,12 @@ QJsonDocument UserInfoManager::sendPostRequest(QString endpoint,QUrlQuery postDa
 }
 
 // 登录请求ByEmail
-bool UserInfoManager::login(QString email, QString password) {
-    if(!isEmailValid(email)) return false;
-    if(!isPasswordValid(password)) return false;
+bool UserInfoManager::login(QString email, QString password)
+{
+    if (!isEmailValid(email))
+        return false;
+    if (!isPasswordValid(password))
+        return false;
     password = encryptPassword(password);
 
     // 构造参数
@@ -39,51 +44,60 @@ bool UserInfoManager::login(QString email, QString password) {
     postData.addQueryItem("password", password);
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("login/email",postData);
+    QJsonDocument jsonDocument = sendPostRequest("login/email", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
 // 登录请求ByUID
-bool UserInfoManager::login(int UID, QString password) {
-    if(UID <= 0) return false;
-    if(!isPasswordValid(password)) return false;
+bool UserInfoManager::login(int UID, QString password)
+{
+    if (UID <= 0)
+        return false;
+    if (!isPasswordValid(password))
+        return false;
     password = encryptPassword(password);
 
     // 构造参数
     QUrlQuery postData;
-    postData.addQueryItem("uid",  QString::number(UID));
+    postData.addQueryItem("uid", QString::number(UID));
     postData.addQueryItem("password", password);
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("login/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("login/uid", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
-//注册请求
-bool UserInfoManager::registerUser(QString username, QString email, QString password,QPixmap pixmap) {
-    //验证数据格式
-    if(isUsernameValid(username)==false)return false;
-    if(isEmailValid(email)==false)return false;
-    if(isPasswordValid(password)==false)return false;
+// 注册请求
+bool UserInfoManager::registerUser(QString username, QString email, QString password, QPixmap pixmap)
+{
+    // 验证数据格式
+    if (isUsernameValid(username) == false)
+        return false;
+    if (isEmailValid(email) == false)
+        return false;
+    if (isPasswordValid(password) == false)
+        return false;
 
-    //验证用户是否存在
-    if(isEmailExist(email)==true)return false;
+    // 验证用户是否存在
+    if (isEmailExist(email) == true)
+        return false;
     password = encryptPassword(password);
 
-
-    //pixmap转base64
+    // pixmap转base64
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
     buffer.open(QIODevice::WriteOnly);
@@ -91,25 +105,26 @@ bool UserInfoManager::registerUser(QString username, QString email, QString pass
     buffer.close();
     QString base64String = byteArray.toBase64();
     base64String = QUrl::toPercentEncoding(base64String);
-    //注册请求
-    // 构造参数
+    // 注册请求
+    //  构造参数
     QUrlQuery postData;
-    postData.addQueryItem("username",  username);
-    postData.addQueryItem("email",  email);
+    postData.addQueryItem("username", username);
+    postData.addQueryItem("email", email);
     postData.addQueryItem("password", password);
     postData.addQueryItem("avatar", base64String);
 
-    QJsonDocument jsonDocument = sendPostRequest("register",postData);
+    QJsonDocument jsonDocument = sendPostRequest("register", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
-//匹配验证码
+// 匹配验证码
 bool UserInfoManager::matchCaptcha(QString email, QString code)
 {
     // 构造参数
@@ -118,17 +133,18 @@ bool UserInfoManager::matchCaptcha(QString email, QString code)
     postData.addQueryItem("code", code);
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("matchCaptcha",postData);
+    QJsonDocument jsonDocument = sendPostRequest("matchCaptcha", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
-//通过邮箱获取验证码
+// 通过邮箱获取验证码
 bool UserInfoManager::getCaptchaByEmail(QString email)
 {
     // 构造参数
@@ -136,24 +152,26 @@ bool UserInfoManager::getCaptchaByEmail(QString email)
     postData.addQueryItem("email", email);
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("sendCaptchaByEmail",postData);
+    QJsonDocument jsonDocument = sendPostRequest("sendCaptchaByEmail", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
-//注销用户
-bool UserInfoManager::deleteUser(int UID) {
-
+// 注销用户
+bool UserInfoManager::deleteUser(int UID)
+{
 }
-//用户是否存在
-bool UserInfoManager::isUserExist(int UID) {
+// 用户是否存在
+bool UserInfoManager::isUserExist(int UID)
+{
     QNetworkRequest request;
-    request.setUrl(QUrl(BASE_URL+"exists/uid?uid=" + QString::number(UID)));
+    request.setUrl(QUrl(BASE_URL + "exists/uid?uid=" + QString::number(UID)));
     QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
     QEventLoop loop;
@@ -162,19 +180,23 @@ bool UserInfoManager::isUserExist(int UID) {
     loop.exec(); // 等待请求完成
 
     bool userExists = false; // 默认用户不存在
-    if (reply->isFinished()&&reply->error() == QNetworkReply::NoError) {
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError)
+    {
         // 读取响应数据
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
         userExists = jsonDocument.object()["exist"].toBool();
-    }else {
+    }
+    else
+    {
         qDebug() << "Error: " << reply->errorString();
     }
     reply->deleteLater();
     return userExists;
 }
 
-bool UserInfoManager::isGroupExist(int groupID) {
+bool UserInfoManager::isGroupExist(int groupID)
+{
     QNetworkRequest request;
     request.setUrl(QUrl(BASE_URL + "exists/groupid?groupid=" + QString::number(groupID)));
 
@@ -186,23 +208,26 @@ bool UserInfoManager::isGroupExist(int groupID) {
     loop.exec(); // 等待请求完成
 
     bool groupExists = false; // 默认群组不存在
-    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError)
+    {
         // 读取响应数据
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
         groupExists = jsonDocument.object()["exist"].toBool();
-    } else {
+    }
+    else
+    {
         qDebug() << "Error: " << reply->errorString();
     }
     reply->deleteLater();
     return groupExists;
 }
 
-
-//邮箱是否存在
-bool UserInfoManager::isEmailExist(QString email) {
+// 邮箱是否存在
+bool UserInfoManager::isEmailExist(QString email)
+{
     QNetworkRequest request;
-    request.setUrl(QUrl(BASE_URL+"exists/email?email=" + email));
+    request.setUrl(QUrl(BASE_URL + "exists/email?email=" + email));
     QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
 
     QEventLoop loop;
@@ -211,57 +236,65 @@ bool UserInfoManager::isEmailExist(QString email) {
     loop.exec(); // 等待请求完成
 
     bool emailExists = false; // 默认邮箱不存在
-    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError)
+    {
         // 读取响应数据
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
         emailExists = jsonDocument.object()["exist"].toBool();
-    } else {
+    }
+    else
+    {
         qDebug() << "Error: " << reply->errorString();
     }
     reply->deleteLater();
     return emailExists;
 }
 
-//用户名是否合法
-bool UserInfoManager::isUsernameValid(QString username) {
+// 用户名是否合法
+bool UserInfoManager::isUsernameValid(QString username)
+{
     // 使用正则表达式匹配用户名格式
-    static const QRegularExpression usernameRegex(R"(^[a-zA-Z0-9一-龥_]{1,20}$)");//由 1 到 20 个汉字、字母、数字或下划线组成
+    static const QRegularExpression usernameRegex(R"(^[a-zA-Z0-9一-龥_]{1,20}$)"); // 由 1 到 20 个汉字、字母、数字或下划线组成
     QRegularExpressionMatch match = usernameRegex.match(username);
     return match.hasMatch();
 }
 
-//邮箱是否合法
-bool UserInfoManager::isEmailValid(QString email) {
+// 邮箱是否合法
+bool UserInfoManager::isEmailValid(QString email)
+{
     // 使用正则表达式匹配邮箱格式
     static const QRegularExpression emailRegex(R"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
     QRegularExpressionMatch match = emailRegex.match(email);
-    return (match.hasMatch() && email.size()<=100);
+    return (match.hasMatch() && email.size() <= 100);
 }
 
-//密码是否合法
-bool UserInfoManager::isPasswordValid(QString password) {
+// 密码是否合法
+bool UserInfoManager::isPasswordValid(QString password)
+{
     if (password.size() < 6 || password.size() > 20)
         return false;
 
     int isupper = 0, islower = 0, isdigit = 0, isspecial = 0;
 
-    for (const QChar &ch : password) {
-        if (ch.isUpper())//大写字母
+    for (const QChar &ch : password)
+    {
+        if (ch.isUpper()) // 大写字母
             isupper = 1;
-        else if (ch.isLower())//小写字母
+        else if (ch.isLower()) // 小写字母
             islower = 1;
-        else if (ch.isDigit())//数字
+        else if (ch.isDigit()) // 数字
             isdigit = 1;
-        else if (ch.isPunct() || ch.isSymbol())//标点符号或符号字符
+        else if (ch.isPunct() || ch.isSymbol()) // 标点符号或符号字符
             isspecial = 1;
     }
     // 至少包含两种类型的符号
     return isupper + islower + isdigit + isspecial >= 2;
 }
 
-//加密密码
-QString UserInfoManager::encryptPassword(QString password) {
+// 加密密码
+QString UserInfoManager::encryptPassword(QString password)
+{
     QByteArray byteArray = password.toUtf8();
     // SHA-256加密
     QCryptographicHash hash(QCryptographicHash::Sha256);
@@ -271,35 +304,37 @@ QString UserInfoManager::encryptPassword(QString password) {
     return hashedData.toHex();
 }
 
-//修改用户名
-bool UserInfoManager::changeUsername(int UID, QString newUsername) {
-
+// 修改用户名
+bool UserInfoManager::changeUsername(int UID, QString newUsername)
+{
 }
 
-//修改邮箱
-bool UserInfoManager::changeEmail(int UID, QString newEmail) {
-
+// 修改邮箱
+bool UserInfoManager::changeEmail(int UID, QString newEmail)
+{
 }
 
-//修改密码
-bool UserInfoManager::changePassword(QString email, QString newPassword) {
+// 修改密码
+bool UserInfoManager::changePassword(QString email, QString newPassword)
+{
     // 构造参数
     QUrlQuery postData;
     postData.addQueryItem("email", email);
     postData.addQueryItem("password", encryptPassword(newPassword));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("updatePassword",postData);
+    QJsonDocument jsonDocument = sendPostRequest("updatePassword", postData);
 
     // 解析响应
     bool success = false;
-    if (!jsonDocument.isEmpty()) {
+    if (!jsonDocument.isEmpty())
+    {
         success = jsonDocument.object()["success"].toBool();
     }
     return success;
 }
 
-//获取用户信息
+// 获取用户信息
 User UserInfoManager::getUser(int UID)
 {
     // 构造参数
@@ -307,53 +342,52 @@ User UserInfoManager::getUser(int UID)
     postData.addQueryItem("uid", QString::number(UID));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("getUser/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("getUser/uid", postData);
 
     // 解析响应
-    if(jsonDocument.isEmpty())
+    if (jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
     return User::toUser(jsonObject);
 }
 
-
-//获取用户信息
-User UserInfoManager::getUser(QString email) {
+// 获取用户信息
+User UserInfoManager::getUser(QString email)
+{
     // 构造参数
     QUrlQuery postData;
     postData.addQueryItem("email", email);
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("getUser/email",postData);
+    QJsonDocument jsonDocument = sendPostRequest("getUser/email", postData);
 
     // 解析响应
-    if(jsonDocument.isEmpty())
+    if (jsonDocument.isEmpty())
         return User();
     QJsonObject jsonObject = jsonDocument.object();
     return User::toUser(jsonObject);
 }
 
-//获取用户的好友列表
+// 获取用户的好友列表
 QVector<User> UserInfoManager::getContactList(int Uid)
 {
-    qDebug()<<"______________";
     QVector<User> list;
     // 构造参数
     QUrlQuery postData;
     postData.addQueryItem("uid", QString::number(Uid));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("/selectcontact/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("/selectcontact/uid", postData);
     QJsonArray userArray = jsonDocument.array();
-    for(const QJsonValue &userValue:userArray)
+    for (const QJsonValue &userValue : userArray)
     {
-        QJsonObject userObject=userValue.toObject();
+        QJsonObject userObject = userValue.toObject();
         list.push_back(User::toUser(userObject));
     }
     return list;
-
 }
 
+// 获取用户所有群
 QVector<Group> UserInfoManager::getGroupList(int Uid)
 {
     QVector<Group> list;
@@ -362,39 +396,49 @@ QVector<Group> UserInfoManager::getGroupList(int Uid)
     postData.addQueryItem("uid", QString::number(Uid));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("/getgroups/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("getgroups/uid", postData);
     QJsonArray groupArray = jsonDocument.array();
-    for(const QJsonValue &groupValue:groupArray)
+    for (const QJsonValue &groupValue : groupArray)
     {
-        QJsonObject groupObject=groupValue.toObject();
+        QJsonObject groupObject = groupValue.toObject();
         list.push_back(Group::toGroup(groupObject));
     }
     return list;
 }
 
-//根据群id获取群
-Group UserInfoManager::getGroupByGid(int Gid)
+// 根据群id获取用户
+QVector<User> UserInfoManager::getGroupMembers(int Gid)
 {
-    Group group;
+    qDebug() << "______________";
+    QVector<User> list;
     // 构造参数
     QUrlQuery postData;
     postData.addQueryItem("groupid", QString::number(Gid));
 
     // 发送POST请求
-    QJsonDocument jsonDocument = sendPostRequest("selectgroup/uid",postData);
+    QJsonDocument jsonDocument = sendPostRequest("getgroupmembers/user", postData);
+    QJsonArray userArray = jsonDocument.array();
+    for (const QJsonValue &userValue : userArray)
+    {
+        QJsonObject userObject = userValue.toObject();
+        list.push_back(User::toUser(userObject));
+    }
+    return list;
+}
+
+// 根据群id获取群
+Group UserInfoManager::getGroupByGid(int Gid)
+{
+    Group group;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("groupid ", QString::number(Gid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("/selectgroup/uid", postData);
     // 解析响应
-    if(jsonDocument.isEmpty())
+    if (jsonDocument.isEmpty())
         return Group();
     QJsonObject jsonObject = jsonDocument.object();
     return Group::toGroup(jsonObject);
 }
-
-
-
-
-
-
-
-
-
-
