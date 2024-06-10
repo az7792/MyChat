@@ -19,33 +19,19 @@ MainForm::MainForm(QWidget *parent)
 
     // 创建 Contact 和 Group 界面
     contactForm *cform = new contactForm(ui->conatctWidget);
-<<<<<<< HEAD
     cform->formInit(user);
 
     groupForm *gform=new groupForm(ui->conatctWidget);
-=======
-    groupForm *gform = new groupForm(ui->conatctWidget);
->>>>>>> feature3
 
     ui->ContactStackedWidget->layout()->addWidget(cform);
     ui->ContactStackedWidget->layout()->addWidget(gform);
     ui->ContactStackedWidget->setCurrentIndex(2);
-
-<<<<<<< HEAD
-
-
-    connect(ui->contactButton,&QPushButton::clicked,this,&MainForm::on_contactButton_clicked);
-    connect(ui->groupButton,&QPushButton::clicked,this,&MainForm::on_groupButton_clicked);
-    connect(cform,&contactForm::passContactUid,this,&MainForm::open_the_chatWindow);
-    connect(gform,&groupForm::passContactGid,this,&MainForm::open_the_groupWindow);
-=======
     connect(ui->contactButton, &QPushButton::clicked, this, &MainForm::on_contactButton_clicked);
     connect(ui->groupButton, &QPushButton::clicked, this, &MainForm::on_groupButton_clicked);
     connect(cform, &contactForm::passContactUid, this, &MainForm::open_the_chatWindow);
     connect(gform, &groupForm::passContactGid, this, &MainForm::open_the_groupWindow);
     connect(ui->addButton, &QPushButton::clicked, this, &MainForm::on_addButton_clicked);
     connect(ui->applyButton, &QPushButton::clicked, this, &MainForm::on_applyButton_clicked);
->>>>>>> feature3
 }
 
 MainForm::~MainForm()
@@ -77,11 +63,6 @@ void MainForm::open_the_groupWindow(int Gid)
     current_g->setName(QString::number(100 + Gid));
     current_g->setGid(Gid);
     ui->massageWidget->layout()->addWidget(current_g);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> feature3
 }
 
 void MainForm::on_addButton_clicked()

@@ -2,7 +2,8 @@
 #include <QPixmap>
 #include <QDebug>
 #include "user.h"
-#include "contactmassage.h""
+#include "group.h" // 假设有一个Group类
+#include "contactmassage.h"
 
 AddForm::AddForm(QWidget *parent) : QWidget(parent)
 {
@@ -74,9 +75,13 @@ AddForm::AddForm(QWidget *parent) : QWidget(parent)
     connect(findUserButton, &QPushButton::clicked, this, &AddForm::onFindUserButtonClicked);
     connect(findGroupButton, &QPushButton::clicked, this, &AddForm::onFindGroupButtonClicked);
     connect(searchButton, &QPushButton::clicked, this, &AddForm::onSearchButtonClicked);
+
+    // 初始化指针为 nullptr
+    currentContactWidget = nullptr;
 }
 
 void AddForm::onFindAllButtonClicked() {
+    status = 0;
     updatePlaceholderText();
     findAllButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
@@ -85,9 +90,16 @@ void AddForm::onFindAllButtonClicked() {
     // 重新显示搜索提示图标和文字
     searchIconLabel->show();
     searchHintLabel->show();
+
+    // 清除上次搜索结果
+    clearPreviousSearchResult();
+
+    // 清空搜索框的内容
+    searchLineEdit->clear();
 }
 
 void AddForm::onFindUserButtonClicked() {
+    status = 1;
     updatePlaceholderText();
     findUserButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
     findAllButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
@@ -96,39 +108,64 @@ void AddForm::onFindUserButtonClicked() {
     // 重新显示搜索提示图标和文字
     searchIconLabel->show();
     searchHintLabel->show();
+
+    // 清除上次搜索结果
+    clearPreviousSearchResult();
+
+    // 清空搜索框的内容
+    searchLineEdit->clear();
 }
 
 void AddForm::onFindGroupButtonClicked() {
+    status = 2;
     updatePlaceholderText();
     findGroupButton->setStyleSheet("QPushButton { background-color: black; color: white; border: 1px solid black; }");
-    findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
-    findAllButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid black; }");
+    findUserButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid黑; }");
+    findAllButton->setStyleSheet("QPushButton { background-color: white; color: black; border: 1px solid黑; }");
 
     // 重新显示搜索提示图标和文字
     searchIconLabel->show();
     searchHintLabel->show();
+
+    // 清除上次搜索结果
+    clearPreviousSearchResult();
+
+    // 清空搜索框的内容
+    searchLineEdit->clear();
 }
 
 void AddForm::onSearchButtonClicked() {
     QString searchText = searchLineEdit->text();
     qDebug() << "搜索: " << searchText;
 
-    // 假设 userinfomanage 是一个已定义的用户管理类实例，用于从后端获取用户信息
-    User user = userinfomanage.getUser(searchText.toInt());
+    // 清除上次搜索结果
+    clearPreviousSearchResult();
 
-    // 创建一个 contactMassage 对象
     contactMassage *contactMassageWidget = new contactMassage(this);
 
-    // 设置 contactMassageWidget 的信息
-    contactMassageWidget->setName(user.getUsername());
-    contactMassageWidget->setUid(user.getUID());
-
+    if (status == 1) {
+        // 按照用户来搜索
+        User user = userinfomanage.getUser(searchText.toInt());
+        contactMassageWidget->setImg(user.getAvatar());
+        contactMassageWidget->setName(user.getUsername());
+        contactMassageWidget->setUid(user.getUID());
+    } else if (status == 2) {
+        // 按照群聊来搜索
+        //Group group = groupinfomanage.getGroup(searchText.toInt());
+        //contactMassageWidget->setImg(group.getAvatar());
+        //contactMassageWidget->setName(group.getGroupname());
+        //contactMassageWidget->setUid(group.getGroupID());
+    } else {
+        // 其他搜索逻辑
+        //contactMassageWidget->setName("Search in all categories not implemented");
+    }
 
     // 将 contactMassageWidget 添加到 contentStack 中
     contentStack->addWidget(contactMassageWidget);
 
     // 切换到显示 contactMassageWidget
     contentStack->setCurrentWidget(contactMassageWidget);
+    currentContactWidget = contactMassageWidget;
 
     // 隐藏搜索提示图标和文字
     searchIconLabel->hide();
@@ -136,13 +173,24 @@ void AddForm::onSearchButtonClicked() {
 }
 
 void AddForm::updatePlaceholderText() {
-    if (findAllButton->styleSheet().contains("background-color: black")) {
+    if (status == 0) {
         searchLineEdit->setPlaceholderText("输入搜索关键词");
-    } else if (findUserButton->styleSheet().contains("background-color: black")) {
+    } else if (status == 1) {
         searchLineEdit->setPlaceholderText("UserId/Username");
-    } else if (findGroupButton->styleSheet().contains("background-color: black")) {
+    } else if (status == 2) {
         searchLineEdit->setPlaceholderText("GroupId/Groupname");
     }
 }
 
+void AddForm::clearPreviousSearchResult() {
+    if (currentContactWidget != nullptr) {
+        contentStack->removeWidget(currentContactWidget);
+        currentContactWidget->deleteLater(); // 释放内存
+        currentContactWidget = nullptr;
 
+        // 切换回默认的搜索提示视图
+        contentStack->setCurrentIndex(0);
+        searchIconLabel->show();
+        searchHintLabel->show();
+    }
+}
