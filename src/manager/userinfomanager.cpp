@@ -374,7 +374,7 @@ Group UserInfoManager::getGroupByGid(int Gid)
     Group group;
     // 构造参数
     QUrlQuery postData;
-    postData.addQueryItem("uid", QString::number(Gid));
+    postData.addQueryItem("groupid ", QString::number(Gid));
 
     // 发送POST请求
     QJsonDocument jsonDocument = sendPostRequest("/selectgroup/uid",postData);

@@ -21,6 +21,10 @@ int main(int argc, char *argv[])
     widgetManager.show();
     // MainForm ttt;
     // ttt.show();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8ddc1384058b39c066a1e8d7110d9a362a8dc37d
     // messageListForm tmp;
     // MessageBox *box1 = new MessageBox();
     // box1->setTime(QDateTime::currentDateTime());
@@ -30,6 +34,10 @@ int main(int argc, char *argv[])
     // box1->show();
     // tmp.addMessageBox(box1);
     // tmp.show();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8ddc1384058b39c066a1e8d7110d9a362a8dc37d
     // ChatWebSocket &web = ChatWebSocket::getInstance();
     // web.connectToServer(QUrl("ws://localhost:8080/chat/1"));
     // ChatForm tmp;

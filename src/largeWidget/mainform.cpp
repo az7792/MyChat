@@ -43,24 +43,41 @@ MainForm::~MainForm()
 
 void MainForm::on_contactButton_clicked()
 {
+    cform->formInit(user);
     ui->ContactStackedWidget->setCurrentIndex(3);
 
 }
 
 void MainForm::on_groupButton_clicked()
 {
+    gform->formInit(user);
     ui->ContactStackedWidget->setCurrentIndex(4);
 }
 
 void MainForm::open_the_chatWindow(int Uid)
 {
     ui->massageWidget->initChat(user, Uid, "user");
+    User tuser=info.getUser(Uid);
+    MessageBox *newBox=new MessageBox;
+    newBox->setAvatar(tuser.getAvatar());
+    newBox->setId(tuser.getUID());
+    newBox->setName(tuser.getUsername());
+    newBox->setChatType("user");
+    msgList->addMessageBox(newBox);
+    ui->ContactStackedWidget->setCurrentIndex(2);
 }
 
 void MainForm::open_the_groupWindow(int Gid)
 {
     //以下暂用用户聊天界面代替
-    ui->massageWidget->initChat(user,Gid,"Group");
+    ui->massageWidget->initChat(user,Gid,"group");
+    Group tgroup=info.getGroupByGid(Gid);
+    MessageBox *newBox=new MessageBox;
+    newBox->setId(tgroup.getGroupid());
+    newBox->setName(tgroup.getGroupname());
+    newBox->setChatType("group");
+    msgList->addMessageBox(newBox);
+    ui->ContactStackedWidget->setCurrentIndex(2);
 }
 void MainForm::on_addButton_clicked()
 {
