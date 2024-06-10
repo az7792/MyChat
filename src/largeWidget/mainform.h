@@ -7,9 +7,11 @@
 #include"mediumWidget/contactform.h"
 #include"mediumWidget//groupform.h"
 #include"entity/user.h"
+#include"entity/group.h"
 #include "mediumWidget/addform.h""
 #include "mediumWidget/FriendNotificationWindow.h""
 #include"mediumWidget/messagelistform.h"
+#include"manager/userinfomanager.h"
 namespace Ui {
 class MainForm;
 }
@@ -50,7 +52,7 @@ private:
 
     AddForm *addForm; // 保存 AddForm 的指针
     FriendNotificationWindow *notificationWindow; // 保存 FriendNotificationWindow 的指针
-
+    UserInfoManager &info = UserInfoManager::getInstance();
 
 };
 
