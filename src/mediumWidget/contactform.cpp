@@ -16,6 +16,14 @@ contactForm::~contactForm()
 void contactForm::formInit(User user)
 {
 
+    QLayout *layout = ui->conatctScrollAreaWidgetContents->layout();
+    if (layout) {
+        QLayoutItem *item;
+        while ((item = layout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+    }
     QVector<User> cList=useIfo.getContactList(user.getUID());
 
     for(User it:cList)

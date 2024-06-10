@@ -15,7 +15,14 @@ groupForm::~groupForm()
 
 void groupForm::formInit(User user)
 {
-
+    QLayout *layout = ui->groupScrollAreaWidgetContents->layout();
+    if (layout) {
+        QLayoutItem *item;
+        while ((item = layout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+    }
     QVector<Group> cList=useIfo.getGroupList(user.getUID());
 
     for(Group it:cList)
