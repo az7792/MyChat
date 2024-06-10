@@ -7,6 +7,7 @@
 #include "webSocket/chatwebsocket.h"
 #include "smallWidget/sendbox.h"
 #include "smallWidget/recvbox.h"
+#include "smallWidget/messagebox.h"
 #include<QScrollBar>
 #include <QMap>
 #include <manager/userinfomanager.h>
@@ -29,9 +30,12 @@ public:
     User sendUser;
     QMap<int,User> recvUsers;
 
+    void addRecvUsers(int id,QString chatType);
+public slots:
+    void onMessageBoxPass(MessageBox *messageBox);
 private slots:
     void on_SendPushButton_clicked();
-    void onTextMessageReceived(const QString &message);
+    void onTextMessageReceived(const QString &message);    
 
 private:
     Ui::ChatForm *ui;

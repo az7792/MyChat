@@ -33,6 +33,7 @@ MainForm::MainForm(QWidget *parent)
     connect(gform, &groupForm::passContactGid, this, &MainForm::open_the_groupWindow);
     connect(ui->addButton, &QPushButton::clicked, this, &MainForm::on_addButton_clicked);
     connect(ui->applyButton, &QPushButton::clicked, this, &MainForm::on_applyButton_clicked);
+    connect(msgList,&messageListForm::passMessageBox,ui->massageWidget,&ChatForm::onMessageBoxPass);
 }
 
 MainForm::~MainForm()
