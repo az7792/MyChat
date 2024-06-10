@@ -40,6 +40,7 @@ public:
     bool deleteUser(int UID);
 
     bool isUserExist(int UID);
+    bool isGroupExist(int groupID);
     bool isEmailExist(QString email);
 
     bool isUsernameValid(QString username);
@@ -54,11 +55,11 @@ public:
 
     User getUser(int UID);
     User getUser(QString email);
+    Group getGroupByGid(int Gid);
 
     QVector<User> getContactList(int Uid);
-    QVector<Group> getGroupList(int Uid);
-    Group getGroupByGid(int Gid);
     QVector<User> getGroupMembers(int Gid);
+    QVector<Group> getGroupList(int Uid);
 
 private:
     explicit UserInfoManager(QObject *parent = nullptr) : QObject(parent) {
@@ -71,6 +72,7 @@ private:
     QNetworkAccessManager *networkManager;
 
     QJsonDocument sendPostRequest(QString endpoint, QUrlQuery postData);
+
 };
 
 #endif // USERINFOMANAGER_H

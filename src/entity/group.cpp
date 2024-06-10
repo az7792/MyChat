@@ -53,3 +53,7 @@ Group Group::toGroup(QJsonObject jsonObject)
     Group group(jsonObject["groupid"].toInt(),jsonObject["groupname"].toString(),jsonObject["ownerid"].toInt());
     return group;
 }
+QPixmap Group::getAvatar()
+{
+    return QPixmap(":/img/resources/defaultAvatar.jpg");
+}

@@ -118,7 +118,7 @@
       <item>
        <widget class="QPushButton" name="addButton">
         <property name="text">
-         <string>添加</string>
+         <string>搜索</string>
         </property>
        </widget>
       </item>

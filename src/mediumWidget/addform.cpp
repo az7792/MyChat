@@ -4,11 +4,12 @@
 #include "entity/user.h"
 #include "smallWidget/contactmassage.h"
 #include "entity/group.h" // 假设有一个Group类
+#include "manager/userinfomanager.h"
 
 AddForm::AddForm(QWidget *parent) : QWidget(parent)
 {
     // 基本设置
-    setWindowTitle("添加联系人");
+    setWindowTitle("搜索联系人");
     this->setStyleSheet("QWidget { background-color: white; }");
     resize(550, 700);
 
@@ -111,8 +112,6 @@ void AddForm::onFindUserButtonClicked() {
 
     // 清除上次搜索结果
     clearPreviousSearchResult();
-
-    // 清空搜索框的内容
     searchLineEdit->clear();
 }
 
@@ -141,31 +140,92 @@ void AddForm::onSearchButtonClicked() {
     // 清除上次搜索结果
     clearPreviousSearchResult();
 
-    contactMassage *contactMassageWidget = new contactMassage(this);
-
     if (status == 1) {
-        // 按照用户来搜索
-        User user = userinfomanage.getUser(searchText.toInt());
-        contactMassageWidget->setImg(user.getAvatar());
-        contactMassageWidget->setName(user.getUsername());
-        contactMassageWidget->setUid(user.getUID());
-    } else if (status == 2) {
-        // 按照群聊来搜索
-        //Group group = groupinfomanage.getGroup(searchText.toInt());
-        //contactMassageWidget->setImg(group.getAvatar());
-        //contactMassageWidget->setName(group.getGroupname());
-        //contactMassageWidget->setUid(group.getGroupID());
-    } else {
-        // 其他搜索逻辑
-        //contactMassageWidget->setName("Search in all categories not implemented");
+        // 按照用户uid来搜索
+        int userID = searchText.toInt();
+        if (userinfomanage.isUserExist(userID)) {
+            User user = userinfomanage.getUser(userID);
+            contactMassage *contactMassageWidget = new contactMassage(this);
+            contactMassageWidget->setImg(user.getAvatar());
+            contactMassageWidget->setName(user.getUsername());
+            contactMassageWidget->setUid(user.getUID());
+            contentStack->addWidget(contactMassageWidget);
+            contentStack->setCurrentWidget(contactMassageWidget);
+            currentContactWidget = contactMassageWidget;
+        } else {
+            qDebug() << "User not found.";
+            QLabel *notFoundLabel = new QLabel("User not found", this);
+            notFoundLabel->setAlignment(Qt::AlignCenter);
+            contentStack->addWidget(notFoundLabel);
+            contentStack->setCurrentWidget(notFoundLabel);
+        }
     }
+    else if (status == 2)
+    {
+        int groupID = searchText.toInt();
+        if(userinfomanage.isGroupExist(groupID))
+        {
+            Group group = userinfomanage.getGroupByGid(searchText.toInt());
+            contactMassage *contactMassageWidget = new contactMassage(this);
+            contactMassageWidget->setImg(group.getAvatar());
+            contactMassageWidget->setName(group.getGroupname());
+            contactMassageWidget->setUid(group.getGroupid());
+            QPushButton *button  = new QPushButton;
+            contentStack->addWidget(contactMassageWidget);
+            contentStack->addWidget(button);
+            contentStack->setCurrentWidget(contactMassageWidget);
+            currentContactWidget = contactMassageWidget;
+        }
+        else
+        {
+            //qDebug() << "Group not found.";
+            QLabel *notFoundLabel = new QLabel("Group not found", this);
+            notFoundLabel->setAlignment(Qt::AlignCenter);
+            contentStack->addWidget(notFoundLabel);
+            contentStack->setCurrentWidget(notFoundLabel);
+        }
+    }
+    else
+    {
+        int userID = searchText.toInt();
+        int groupID = searchText.toInt();
+        bool isUserExist = userinfomanage.isUserExist(userID);
+        bool isGroupExist = userinfomanage.isGroupExist(groupID);
 
-    // 将 contactMassageWidget 添加到 contentStack 中
-    contentStack->addWidget(contactMassageWidget);
+        if (!isUserExist && !isGroupExist) {
+            qDebug() << "User and group not found.";
+            QLabel *notFoundLabel = new QLabel("User or Group not found", this);
+            notFoundLabel->setAlignment(Qt::AlignCenter);
+            contentStack->addWidget(notFoundLabel);
+            contentStack->setCurrentWidget(notFoundLabel);
+        } else {
+            clearPreviousSearchResult();
+            QWidget *resultWidget = new QWidget(this); // 创建一个新的 QWidget 作为容器
+            QVBoxLayout *layout = new QVBoxLayout(resultWidget); // 使用垂直布局
 
-    // 切换到显示 contactMassageWidget
-    contentStack->setCurrentWidget(contactMassageWidget);
-    currentContactWidget = contactMassageWidget;
+            if (isUserExist) {
+                User user = userinfomanage.getUser(userID);
+                contactMassage *userContactWidget = new contactMassage(this);
+                userContactWidget->setImg(user.getAvatar());
+                userContactWidget->setName(user.getUsername());
+                userContactWidget->setUid(user.getUID());
+                layout->addWidget(userContactWidget); // 将用户信息添加到布局
+            }
+            if (isGroupExist) {
+                Group group = userinfomanage.getGroupByGid(groupID);
+                contactMassage *groupContactWidget = new contactMassage(this);
+                groupContactWidget->setImg(group.getAvatar());
+                groupContactWidget->setName(group.getGroupname());
+                groupContactWidget->setUid(group.getGroupid());
+                layout->addWidget(groupContactWidget); // 将群组信息添加到布局
+            }
+            resultWidget->setLayout(layout);
+            contentStack->addWidget(resultWidget);
+            contentStack->setCurrentWidget(resultWidget);
+            //currentContactWidget = resultWidget; // 更新 currentContactWidget 为 resultWidget
+        }
+
+    }
 
     // 隐藏搜索提示图标和文字
     searchIconLabel->hide();
@@ -176,12 +236,11 @@ void AddForm::updatePlaceholderText() {
     if (status == 0) {
         searchLineEdit->setPlaceholderText("输入搜索关键词");
     } else if (status == 1) {
-        searchLineEdit->setPlaceholderText("UserId/Username");
+        searchLineEdit->setPlaceholderText("UserId");
     } else if (status == 2) {
-        searchLineEdit->setPlaceholderText("GroupId/Groupname");
+        searchLineEdit->setPlaceholderText("GroupId");
     }
 }
-
 void AddForm::clearPreviousSearchResult() {
     if (currentContactWidget != nullptr) {
         contentStack->removeWidget(currentContactWidget);
@@ -189,6 +248,11 @@ void AddForm::clearPreviousSearchResult() {
         currentContactWidget = nullptr;
 
         // 切换回默认的搜索提示视图
+        contentStack->setCurrentIndex(0);
+        searchIconLabel->show();
+        searchHintLabel->show();
+    } else {
+        // 如果没有 currentContactWidget 需要清除，直接切换回默认视图
         contentStack->setCurrentIndex(0);
         searchIconLabel->show();
         searchHintLabel->show();
