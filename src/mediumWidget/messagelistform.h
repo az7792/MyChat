@@ -2,7 +2,7 @@
 #define MESSAGELISTFORM_H
 
 #include <QWidget>
-#include "messagebox.h"
+#include "smallWidget/messagebox.h"
 namespace Ui {
 class messageListForm;
 }

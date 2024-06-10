@@ -174,7 +174,7 @@
   <customwidget>
    <class>ChatForm</class>
    <extends>QWidget</extends>
-   <header location="global">chatform.h</header>
+   <header location="global">mediumWidget/chatform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

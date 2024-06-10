@@ -9,73 +9,71 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    chatform.cpp \
-    chatwebsocket.cpp \
-    FriendNotificationWindow.cpp \
-    addform.cpp \
-    contactmanager.cpp \
-    databasemanager.cpp \
-    formmanager.cpp \
-    group.cpp \
-    groupmanager.cpp \
-    loginform.cpp \
+    entity/group.cpp \
+    entity/message.cpp \
+    entity/user.cpp \
+    largeWidget/mainform.cpp \
     main.cpp \
-    mainform.cpp \
-    message.cpp \
-    messagebox.cpp \
-    messagelistform.cpp \
-    recvbox.cpp \
-    registerform.cpp \
-    resetpasswordform.cpp \
-    sendbox.cpp \
-    user.cpp \
-    userinfomanager.cpp \
-    contactform.cpp \
-    contactmassage.cpp \
-    groupform.cpp \
-    groupmassage.cpp
+    manager/databasemanager.cpp \
+    manager/formmanager.cpp \
+    manager/userinfomanager.cpp \
+    mediumWidget/FriendNotificationWindow.cpp \
+    mediumWidget/addform.cpp \
+    mediumWidget/chatform.cpp \
+    mediumWidget/contactform.cpp \
+    mediumWidget/groupform.cpp \
+    mediumWidget/messagelistform.cpp \
+    smallWidget/contactmassage.cpp \
+    smallWidget/groupmassage.cpp \
+    smallWidget/loginform.cpp \
+    smallWidget/messagebox.cpp \
+    smallWidget/recvbox.cpp \
+    smallWidget/registerform.cpp \
+    smallWidget/resetpasswordform.cpp \
+    smallWidget/sendbox.cpp \
+    webSocket/chatwebsocket.cpp
+
 
 HEADERS += \
-    chatform.h \
-    chatwebsocket.h \
-    FriendNotificationWindow.h \
-    addform.h \
-    contactmanager.h \
-    databasemanager.h \
-    formmanager.h \
-    group.h \
-    groupmanager.h \
-    logger.h \
-    loginform.h \
-    mainform.h \
-    message.h \
-    messagebox.h \
-    messagelistform.h \
-    recvbox.h \
-    registerform.h \
-    resetpasswordform.h \
-    sendbox.h \
-    user.h \
-    userinfomanager.h \
-    contactform.h \
-    contactmassage.h \
-    groupform.h \
-    groupmassage.h
+    entity/group.h \
+    entity/message.h \
+    entity/user.h \
+    largeWidget/mainform.h \
+    manager/databasemanager.h \
+    manager/formmanager.h \
+    manager/userinfomanager.h \
+    mediumWidget/FriendNotificationWindow.h \
+    mediumWidget/addform.h \
+    mediumWidget/chatform.h \
+    mediumWidget/contactform.h \
+    mediumWidget/groupform.h \
+    mediumWidget/messagelistform.h \
+    smallWidget/contactmassage.h \
+    smallWidget/groupmassage.h \
+    smallWidget/loginform.h \
+    smallWidget/messagebox.h \
+    smallWidget/recvbox.h \
+    smallWidget/registerform.h \
+    smallWidget/resetpasswordform.h \
+    smallWidget/sendbox.h \
+    webSocket/chatwebsocket.h
+
 
 FORMS += \
-    chatform.ui \
-    loginform.ui \
-    mainform.ui \
-    messagebox.ui \
-    messagelistform.ui \
-    recvbox.ui \
-    registerform.ui \
-    resetpasswordform.ui \
-    sendbox.ui \
-    contactform.ui \
-    contactmassage.ui \
-    groupform.ui \
-    groupmassage.ui
+    largeWidget/mainform.ui \
+    mediumWidget/chatform.ui \
+    mediumWidget/contactform.ui \
+    mediumWidget/groupform.ui \
+    mediumWidget/messagelistform.ui \
+    smallWidget/contactmassage.ui \
+    smallWidget/groupmassage.ui \
+    smallWidget/loginform.ui \
+    smallWidget/messagebox.ui \
+    smallWidget/recvbox.ui \
+    smallWidget/registerform.ui \
+    smallWidget/resetpasswordform.ui \
+    smallWidget/sendbox.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

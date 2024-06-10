@@ -2,7 +2,7 @@
 #define MESSAGEBOX_H
 
 #include <QWidget>
-#include "message.h"
+#include "entity/message.h"
 #include <QVector>
 namespace Ui {
 class MessageBox;

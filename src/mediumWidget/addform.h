@@ -10,8 +10,8 @@
 #include <QStackedWidget>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include "userinfomanager.h"
-#include "contactmassage.h"
+#include "manager/userinfomanager.h"
+#include "smallWidget/contactmassage.h"
 #include <QObject>
 
 

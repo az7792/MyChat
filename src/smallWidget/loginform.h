@@ -1,11 +1,11 @@
 #ifndef LOGINFORM_H
 #define LOGINFORM_H
 
-#include "userinfomanager.h"
+#include "manager/userinfomanager.h"
 
 #include <QWidget>
 #include <QMessageBox>
-#include "user.h"
+#include "entity/user.h"
 namespace Ui {
 class LoginForm;
 }

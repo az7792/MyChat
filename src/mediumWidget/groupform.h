@@ -3,10 +3,10 @@
 
 #include <QWidget>
 #include<QVBoxLayout>
-#include<groupmassage.h>
-#include"user.h"
-#include"group.h"
-#include"userinfomanager.h"
+#include<smallWidget/groupmassage.h>
+#include"entity/user.h"
+#include"entity/group.h"
+#include"manager/userinfomanager.h"
 
 namespace Ui {
 class groupForm;

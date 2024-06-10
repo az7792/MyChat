@@ -1,7 +1,7 @@
 #ifndef REGISTERFORM_H
 #define REGISTERFORM_H
 
-#include "userinfomanager.h"
+#include "manager/userinfomanager.h"
 
 #include <QWidget>
 #include <QFileDialog>

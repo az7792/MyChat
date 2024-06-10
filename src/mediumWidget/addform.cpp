@@ -1,8 +1,8 @@
 #include "addform.h"
 #include <QPixmap>
 #include <QDebug>
-#include "user.h"
-#include "contactmassage.h""
+#include "entity/user.h"
+#include "smallWidget/contactmassage.h"
 
 AddForm::AddForm(QWidget *parent) : QWidget(parent)
 {

@@ -7,9 +7,9 @@
 #include<QMouseEvent>
 
 #include<QDebug>
-#include"contactmassage.h"
-#include"userinfomanager.h"
-#include"user.h"
+#include"smallWidget/contactmassage.h"
+#include"manager/userinfomanager.h"
+#include"entity/user.h"
 
 namespace Ui {
 class contactForm;

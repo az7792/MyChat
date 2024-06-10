@@ -3,7 +3,7 @@
 
 #include <QtSql>
 #include <QDebug>
-#include "message.h"
+#include "entity/message.h"
 
 class DatabaseManager {
 public:

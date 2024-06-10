@@ -3,12 +3,12 @@
 
 #include <QVector>
 #include <QStackedLayout>
-#include "loginform.h"
-#include "registerform.h"
-#include"mainform.h"
-#include "resetpasswordform.h"
-#include "user.h"
-#include"chatwebsocket.h"
+#include "smallWidget/loginform.h"
+#include "smallWidget/registerform.h"
+#include"largeWidget/mainform.h"
+#include "smallWidget/resetpasswordform.h"
+#include "entity/user.h"
+#include"webSocket/chatwebsocket.h"
 class FormManager : public QWidget
 {
     Q_OBJECT

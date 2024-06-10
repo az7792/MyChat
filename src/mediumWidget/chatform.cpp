@@ -1,4 +1,4 @@
-#include "chatform.h"
+#include "mediumWidget/chatform.h"
 #include "ui_chatform.h"
 
 #include <QTimer>

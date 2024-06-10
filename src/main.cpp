@@ -1,34 +1,7 @@
-#include "formmanager.h"
-#include "addform.h"
-#include "FriendNotificationWindow.h"
+#include "manager/formmanager.h"
 #include <QApplication>
 #include <QBuffer>
 #include <QPushButton>
-#include "chatwebsocket.h"
-<<<<<<< HEAD
-#include "mainform.h"
-=======
-//#include "mainwindow.h"
->>>>>>> feature3
-#include "chatform.h"
-#include "mainform.h"
-#include "userinfomanager.h"
-<<<<<<< HEAD
-#include "addform.h"
-
-
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    AddForm addform;
-    addform.show();
-
-    // FormManager widgetManager;
-    // widgetManager.show();
-
-
-=======
-#include "databasemanager.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -43,7 +16,6 @@ int main(int argc, char *argv[])
     // }
     FormManager widgetManager;
     widgetManager.show();
->>>>>>> feature3
     // MainForm ttt;
     // ttt.show();
 

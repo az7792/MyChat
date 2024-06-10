@@ -2,7 +2,7 @@
 #define RESETPASSWORDFORM_H
 
 #include <QWidget>
-#include <userinfomanager.h>
+#include <manager/userinfomanager.h>
 namespace Ui {
 class ResetPasswordForm;
 }

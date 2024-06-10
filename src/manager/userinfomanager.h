@@ -11,8 +11,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include<QJsonArray>
-#include "User.h"
-#include "group.h"
+#include "entity/User.h"
+#include "entity/group.h"
 
 class UserInfoManager : public QObject
 {

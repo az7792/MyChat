@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QWebSocket>
-#include <message.h>
+#include <entity/message.h>
 class ChatWebSocket : public QObject
 {
     Q_OBJECT

@@ -2,14 +2,14 @@
 #define CHATFORM_H
 
 #include <QWidget>
-#include "user.h"
-#include "message.h"
-#include "chatwebsocket.h"
-#include "sendbox.h"
-#include "recvbox.h"
+#include "entity/user.h"
+#include "entity/message.h"
+#include "webSocket/chatwebsocket.h"
+#include "smallWidget/sendbox.h"
+#include "smallWidget/recvbox.h"
 #include<QScrollBar>
 #include <QMap>
-#include <userinfomanager.h>
+#include <manager/userinfomanager.h>
 namespace Ui {
 class ChatForm;
 }

@@ -1,7 +1,7 @@
 #include "mainform.h"
 #include "ui_mainform.h"
-#include "addform.h"
-#include "friendnotificationwindow.h"
+#include "mediumWidget/addform.h"
+#include "mediumWidget/friendnotificationwindow.h"
 
 MainForm::MainForm(QWidget *parent)
     : QWidget(parent)
@@ -64,8 +64,6 @@ void MainForm::open_the_groupWindow(int Gid)
     //以下暂用用户聊天界面代替
     ui->massageWidget->initChat(user,Gid,"Group");
 }
-
-<<<<<<< HEAD
 void MainForm::on_addButton_clicked()
 {
     // 如果窗口已存在，先关闭它
@@ -105,11 +103,8 @@ void MainForm::on_applyButton_clicked()
         notificationWindow = nullptr; // 重置指针
     });
 }
-=======
 
 void MainForm::on_massageButton_clicked()
 {
     ui->ContactStackedWidget->setCurrentIndex(2);
 }
-
->>>>>>> feature3
