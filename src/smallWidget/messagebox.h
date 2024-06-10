@@ -33,6 +33,8 @@ public:
     void setChatType(const QString &newChatType);
     void setAvatar(const QPixmap &newAvatar);
     void setId(int newId);
+    void setBackgroundColor(const QColor& backgroundcolor);
+    void setStyleSheet(const QString& style);
 
 private:
     Ui::MessageBox *ui;

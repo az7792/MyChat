@@ -61,3 +61,13 @@ void MessageBox::setId(int newId)
 {
     id = newId;
 }
+
+void MessageBox::setBackgroundColor(const QColor &backgroundcolor)
+{
+    setStyleSheet(QString("#BGwidget{background-color: %1;}").arg(backgroundcolor.name()));
+}
+
+void MessageBox::setStyleSheet(const QString &style)
+{
+    QWidget::setStyleSheet(styleSheet()+style);
+}
