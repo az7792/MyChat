@@ -27,7 +27,6 @@ MainForm::MainForm(QWidget *parent)
     ui->ContactStackedWidget->layout()->addWidget(cform);
     ui->ContactStackedWidget->layout()->addWidget(gform);    
     ui->ContactStackedWidget->setCurrentIndex(2);
-
     connect(ui->contactButton, &QPushButton::clicked, this, &MainForm::on_contactButton_clicked);
     connect(ui->groupButton, &QPushButton::clicked, this, &MainForm::on_groupButton_clicked);
     connect(cform, &contactForm::passContactUid, this, &MainForm::open_the_chatWindow);
