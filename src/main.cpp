@@ -9,9 +9,19 @@
 #include "chatform.h"
 #include "mainform.h"
 #include "userinfomanager.h"
+#include "databasemanager.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // DatabaseManager::initializeDatabase("messages.db");
+    // Message msg(1,1,2,"user","message","text",QDateTime::currentDateTime());
+    // //DatabaseManager::saveMessageToDatabase(msg);
+    // DatabaseManager::setMessageReadStatus(1,0);
+    // QVector<Message> ms = DatabaseManager::loadMessagesFromDatabase();
+    // for(auto v:ms)
+    // {
+    //     qDebug()<<v.messageId<<" "<<v.sentTime<<v.isRead;
+    // }
     FormManager widgetManager;
     widgetManager.show();
     // MainForm ttt;

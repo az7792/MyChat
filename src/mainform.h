@@ -7,9 +7,8 @@
 #include"groupmassage.h"
 #include"contactform.h"
 #include"groupform.h"
-#include "ui_mainwindow.h"
 #include"user.h"
-
+#include"messagelistform.h"
 namespace Ui {
 class MainForm;
 }
@@ -33,11 +32,14 @@ private slots:
 
     void open_the_groupWindow(int Uid);
 
+    void on_massageButton_clicked();
+
 private:
      Ui::MainForm *ui;
 
     contactMassage *current_c;
     groupMassage *current_g;
+    messageListForm *msgList;
 
 
 };

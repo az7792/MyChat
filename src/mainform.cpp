@@ -24,8 +24,10 @@ MainForm::MainForm(QWidget *parent)
 
     groupForm *gform=new groupForm(ui->conatctWidget);
 
+    msgList = new messageListForm(ui->conatctWidget);
+    ui->ContactStackedWidget->layout()->addWidget(msgList);
     ui->ContactStackedWidget->layout()->addWidget(cform);
-    ui->ContactStackedWidget->layout()->addWidget(gform);
+    ui->ContactStackedWidget->layout()->addWidget(gform);    
     ui->ContactStackedWidget->setCurrentIndex(2);
 
 
@@ -43,14 +45,14 @@ MainForm::~MainForm()
 
 void MainForm::on_contactButton_clicked()
 {
-    ui->ContactStackedWidget->setCurrentIndex(2);
+    ui->ContactStackedWidget->setCurrentIndex(3);
 
 }
 
 
 void MainForm::on_groupButton_clicked()
 {
-    ui->ContactStackedWidget->setCurrentIndex(3);
+    ui->ContactStackedWidget->setCurrentIndex(4);
 }
 
 
@@ -73,5 +75,11 @@ void MainForm::open_the_groupWindow(int Gid)
     ui->massageWidget->layout()->addWidget(current_g);
 
 
+}
+
+
+void MainForm::on_massageButton_clicked()
+{
+    ui->ContactStackedWidget->setCurrentIndex(2);
 }
 
