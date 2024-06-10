@@ -15,7 +15,8 @@ public:
     explicit messageListForm(QWidget *parent = nullptr);
     ~messageListForm();
     void addMessageBox(MessageBox *messagebox);
-
+signals:
+    void passMessageBox(MessageBox *messageBox);
 private:
     Ui::messageListForm *ui;
 };

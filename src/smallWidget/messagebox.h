@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "entity/message.h"
 #include <QVector>
+#include <QMouseEvent>
 namespace Ui {
 class MessageBox;
 }
@@ -15,6 +16,7 @@ class MessageBox : public QWidget
 public:
     explicit MessageBox(QWidget *parent = nullptr);
     ~MessageBox();
+    void mousePressEvent(QMouseEvent *event) override;//鼠标单击
     QVector<Message>messages;
     QDateTime time;
     int numUnread;
@@ -24,8 +26,6 @@ public:
     QPixmap avatar;
     int id;
     void addMessage(Message message);
-
-
     void setTime(const QDateTime &newTime);
     void setNumUnread(int newNumUnread);
     void setNewMessage(const QString &newNewMessage);
@@ -35,7 +35,8 @@ public:
     void setId(int newId);
     void setBackgroundColor(const QColor& backgroundcolor);
     void setStyleSheet(const QString& style);
-
+signals:
+    void clicked(MessageBox *messageBox);
 private:
     Ui::MessageBox *ui;
 

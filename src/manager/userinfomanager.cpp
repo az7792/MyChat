@@ -311,7 +311,6 @@ User UserInfoManager::getUser(QString email) {
 //获取用户的好友列表
 QVector<User> UserInfoManager::getContactList(int Uid)
 {
-    qDebug()<<"______________";
     QVector<User> list;
     // 构造参数
     QUrlQuery postData;
