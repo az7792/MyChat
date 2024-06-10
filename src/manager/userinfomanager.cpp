@@ -174,6 +174,31 @@ bool UserInfoManager::isUserExist(int UID) {
     return userExists;
 }
 
+bool UserInfoManager::isGroupExist(int groupID) {
+    QNetworkRequest request;
+    request.setUrl(QUrl(BASE_URL + "exists/groupid?groupid=" + QString::number(groupID)));
+
+    QNetworkReply *reply = networkManager->get(request); // 发送 GET 请求，并获取返回的响应
+
+    QEventLoop loop;
+    // 当请求完成时，中断事件循环
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec(); // 等待请求完成
+
+    bool groupExists = false; // 默认群组不存在
+    if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+        // 读取响应数据
+        QByteArray responseData = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(responseData);
+        groupExists = jsonDocument.object()["exist"].toBool();
+    } else {
+        qDebug() << "Error: " << reply->errorString();
+    }
+    reply->deleteLater();
+    return groupExists;
+}
+
+
 //邮箱是否存在
 bool UserInfoManager::isEmailExist(QString email) {
     QNetworkRequest request;
@@ -345,6 +370,23 @@ QVector<Group> UserInfoManager::getGroupList(int Uid)
         list.push_back(Group::toGroup(groupObject));
     }
     return list;
+}
+
+//根据群id获取群
+Group UserInfoManager::getGroupByGid(int Gid)
+{
+    Group group;
+    // 构造参数
+    QUrlQuery postData;
+    postData.addQueryItem("groupid", QString::number(Gid));
+
+    // 发送POST请求
+    QJsonDocument jsonDocument = sendPostRequest("selectgroup/uid",postData);
+    // 解析响应
+    if(jsonDocument.isEmpty())
+        return Group();
+    QJsonObject jsonObject = jsonDocument.object();
+    return Group::toGroup(jsonObject);
 }
 
 

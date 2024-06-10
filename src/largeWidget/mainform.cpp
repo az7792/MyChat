@@ -33,7 +33,7 @@ MainForm::MainForm(QWidget *parent)
     connect(ui->groupButton, &QPushButton::clicked, this, &MainForm::on_groupButton_clicked);
     connect(cform, &contactForm::passContactUid, this, &MainForm::open_the_chatWindow);
     connect(gform, &groupForm::passContactGid, this, &MainForm::open_the_groupWindow);
-    connect(ui->addButton, &QPushButton::clicked, this, &MainForm::on_addButton_clicked);
+    connect(ui->addButton, &QPushButton::clicked, this, &MainForm::on_searchButton_clicked);
     connect(ui->applyButton, &QPushButton::clicked, this, &MainForm::on_applyButton_clicked);
 }
 
@@ -63,7 +63,7 @@ void MainForm::open_the_groupWindow(int Gid)
     //以下暂用用户聊天界面代替
     ui->massageWidget->initChat(user,Gid,"Group");
 }
-void MainForm::on_addButton_clicked()
+void MainForm::on_searchButton_clicked()
 {
     // 如果窗口已存在，先关闭它
     if (addForm) {

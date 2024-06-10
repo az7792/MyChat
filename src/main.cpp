@@ -5,6 +5,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    FormManager formmanger;
+    formmanger.show();
+    // AddForm addform;
+    // addform.show();
     // DatabaseManager::initializeDatabase("messages.db");
     // Message msg(1,1,2,"user","message","text",QDateTime::currentDateTime());
     // //DatabaseManager::saveMessageToDatabase(msg);
@@ -14,8 +18,7 @@ int main(int argc, char *argv[])
     // {
     //     qDebug()<<v.messageId<<" "<<v.sentTime<<v.isRead;
     // }
-    FormManager widgetManager;
-    widgetManager.show();
+
     // MainForm ttt;
     // ttt.show();
 

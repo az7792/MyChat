@@ -3,5 +3,6 @@
         <file>resources/1.png</file>
         <file>resources/defaultAvatar.jpg</file>
         <file>resources/logo.png</file>
+        <file>resources/notfound.png</file>
     </qresource>
 </RCC>

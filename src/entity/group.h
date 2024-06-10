@@ -4,6 +4,7 @@
 #include <QObject>
 #include<qstring.h>
 #include<QJsonObject>
+#include <QPixmap>
 
 class Group
 {
@@ -17,6 +18,8 @@ public:
     void setGroupid(int groupid);
     void setUsername(QString groupname);
     void setOwnerid(int ownerid);
+    QPixmap getAvatar();
+
 
     static Group toGroup(QJsonObject jsonObject);
 

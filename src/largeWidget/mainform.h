@@ -33,7 +33,7 @@ private slots:
     void open_the_groupWindow(int Uid);
     void on_applyButton_clicked();
 
-    void on_addButton_clicked();
+    void on_searchButton_clicked();
     void on_massageButton_clicked();
 
 private:

@@ -40,12 +40,14 @@ private:
     QStackedWidget *contentStack;
     QVBoxLayout *resultLayout; // 用于显示搜索结果的布局
 
+    //QWidget *currentContactWidget = nullptr; // 将类型改为 QWidget*
     contactMassage *contactMassageWidget = nullptr; // 当前的 contactMassage 对象
     contactMassage *currentContactWidget = nullptr; // 当前显示的搜索结果 widget
 
     void updatePlaceholderText();
     void updateStyles();
     void clearPreviousSearchResult(); // 新增的用于清除上次搜索结果的方法
+    void onApplyButtonClicked(contactMassage *contactMassageWidget) ;
 };
 
 #endif // ADDFORM_H
